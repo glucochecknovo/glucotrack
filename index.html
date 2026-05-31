@@ -4,343 +4,322 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GlucoTrack</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 :root{
-  --teal:#0d9e75;--teal-light:#e1f5ee;--teal-mid:#1d9e75;--teal-dark:#085041;
-  --amber:#ef9f27;--amber-light:#faeeda;--amber-dark:#a0600a;
-  --red:#e24b4a;--red-light:#fcebeb;--red-dark:#a32d2d;
-  --green:#639922;--green-light:#eaf3de;--green-dark:#274010;
-  --blue:#378add;--blue-light:#e6f1fb;--blue-dark:#185fa5;
-  --bg:#f7f5f0;--card:#fff;--text:#1a1a1a;--muted:#6b6b6b;--border:#e8e4dc;--radius:20px;
+  --ink:#0f0e0c;--ink2:#2a2825;--ink3:#5a5752;
+  --cream:#faf8f4;--paper:#f3f0ea;--paper2:#ece8df;
+  --sage:#2d5a3d;--sage2:#3d7a54;--sage3:#5a9e70;--sage4:#c8e6d2;--sage5:#eaf5ee;
+  --gold:#b8860b;--gold2:#d4a520;--gold3:#f0c84a;--gold4:#fdf6d8;
+  --red:#8b1a1a;--red2:#c43030;--red3:#fce8e8;
+  --amber:#7a4500;--amber2:#c47800;--amber3:#fff0d0;
+  --teal:#1a4a5a;--teal2:#2a7090;--teal3:#e0f2f8;
+  --r:16px;--r2:24px;--r3:32px;
+  --sh:0 2px 12px rgba(15,14,12,.08);--sh2:0 8px 32px rgba(15,14,12,.12);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
 
-/* ── PROFILE MODAL ── MOBILE SCROLL FIXED ── */
-#profileOverlay{
-  position:fixed;inset:0;
-  background-color:#041f1a;
-  background-image:
-    linear-gradient(135deg,rgba(4,31,26,0.82) 0%,rgba(7,64,47,0.78) 55%,rgba(10,90,69,0.80) 100%),
-    url('https://images.pexels.com/photos/6941884/pexels-photo-6941884.jpeg?cs=srgb&dl=pexels-n-voitkevich-6941884.jpg&fm=jpg');
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  z-index:9999;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  padding:1.5rem;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
-/* On larger screens, vertically center the card */
-@media(min-height:700px){
-  #profileOverlay{align-items:center;}
-}
-.profile-card{
-  background:#fff;border-radius:28px;padding:2.5rem 2rem;
-  width:100%;max-width:520px;
-  box-shadow:0 32px 80px rgba(0,0,0,.4);
-  flex-shrink:0;              /* KEY FIX: prevents card from being squished */
-  margin:auto 0;              /* centers vertically when overflow is not needed */
-}
-.profile-logo{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;}
-.profile-logo-icon{width:44px;height:44px;background:var(--teal-dark);border-radius:12px;display:flex;align-items:center;justify-content:center;}
-.profile-logo-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;}
-.profile-logo-name{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--teal-dark);font-weight:500;}
-.profile-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:500;color:var(--teal-dark);margin-bottom:.35rem;}
-.profile-sub{font-size:.88rem;color:var(--muted);margin-bottom:1.75rem;line-height:1.55;}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
-.profile-field{display:flex;flex-direction:column;gap:6px;}
+#profileOverlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#0c1610 url('https://www.shutterstock.com/image-photo/diabetes-word-on-notebook-blood-260nw-2447530371.jpg') center/cover no-repeat;}
+#profileOverlay::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:rgba(10,20,14,.80);}
+.profile-card{background:var(--cream);border-radius:var(--r3);padding:2.5rem 2.2rem;width:100%;max-width:520px;box-shadow:0 40px 80px rgba(0,0,0,.5);position:relative;z-index:2;border:1px solid var(--paper2);flex-shrink:0;}
+.profile-logo{display:flex;align-items:center;gap:10px;margin-bottom:2rem;}
+.profile-logo-icon{width:38px;height:38px;background:var(--sage);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.profile-logo-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;}
+.profile-logo-name{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--sage);}
+.profile-title{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--ink);margin-bottom:.4rem;line-height:1.2;}
+.profile-sub{font-size:.85rem;color:var(--ink3);margin-bottom:1.75rem;line-height:1.65;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem;}
+.profile-field{display:flex;flex-direction:column;gap:5px;}
 .profile-field.full{grid-column:1/-1;}
-.profile-field label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
-.profile-field input,.profile-field select{padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--text);background:#faf9f7;outline:none;transition:border-color .2s;}
-.profile-field input:focus,.profile-field select:focus{border-color:var(--teal-mid);background:#fff;}
-.profile-err{background:var(--red-light);color:var(--red-dark);border-radius:10px;padding:.65rem 1rem;font-size:.82rem;margin-bottom:1rem;display:none;border-left:3px solid var(--red);}
+.profile-field label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);}
+.profile-field input,.profile-field select{padding:.75rem 1rem;border:1.5px solid var(--paper2);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s,background .2s;}
+.profile-field input:focus,.profile-field select:focus{border-color:var(--sage3);background:#fff;}
+.profile-err{background:var(--red3);color:var(--red);border-radius:var(--r);padding:.65rem 1rem;font-size:.82rem;margin-bottom:.9rem;display:none;border-left:3px solid var(--red2);}
 .profile-err.show{display:block;}
-.profile-btn{width:100%;padding:.9rem;background:var(--teal-dark);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
-.profile-btn:hover{background:var(--teal-mid);}.profile-btn:active{transform:scale(.98);}
-/* ── PHOTO UPLOAD ── */
-.photo-upload-wrap{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.25rem;padding:.9rem 1rem;background:#f4fbf8;border:1.5px dashed #a8d5c2;border-radius:14px;}
-.photo-preview-circle{width:64px;height:64px;border-radius:50%;background:var(--teal-light);border:2.5px solid #a8d5c2;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .15s;}
-.photo-preview-circle:hover{border-color:var(--teal-dark);transform:scale(1.05);}
+.profile-btn{width:100%;padding:.9rem;background:var(--sage);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:background .2s,transform .1s;margin-top:.25rem;}
+.profile-btn:hover{background:var(--sage2)}.profile-btn:active{transform:scale(.98)}
+.photo-upload-wrap{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;padding:.9rem 1rem;background:var(--sage5);border:1.5px dashed var(--sage4);border-radius:var(--r2);}
+.photo-preview-circle{width:58px;height:58px;border-radius:50%;background:var(--sage4);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.photo-preview-circle:hover{transform:scale(1.05)}
 .photo-preview-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.photo-upload-right{flex:1;}
-.photo-upload-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px;}
-.photo-upload-hint{font-size:.77rem;color:var(--muted);line-height:1.45;margin-bottom:.55rem;}
-.photo-btns{display:flex;gap:6px;flex-wrap:wrap;}
-.photo-choose-btn{display:inline-flex;align-items:center;gap:5px;padding:.42rem .85rem;background:var(--teal-dark);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .2s;}
-.photo-choose-btn:hover{background:var(--teal-mid);}
-.photo-remove-btn{display:none;padding:.4rem .8rem;background:var(--red-light);color:var(--red-dark);border:1px solid #f5c2c2;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;}
-.photo-remove-btn.show{display:inline-block;}
-#photoFileInput{display:none;}
+.photo-upload-right{flex:1}
+.photo-upload-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:3px;}
+.photo-upload-hint{font-size:.76rem;color:var(--ink3);line-height:1.45;margin-bottom:.5rem;}
+.photo-btns{display:flex;gap:6px;flex-wrap:wrap}
+.photo-choose-btn{display:inline-flex;align-items:center;gap:5px;padding:.38rem .8rem;background:var(--sage);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;cursor:pointer;transition:background .2s;}
+.photo-choose-btn:hover{background:var(--sage2)}
+.photo-remove-btn{display:none;padding:.36rem .75rem;background:var(--red3);color:var(--red);border:1px solid #f0c0c0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:500;cursor:pointer;}
+.photo-remove-btn.show{display:inline-block}
+#photoFileInput{display:none}
 
-/* ── PDF MODAL ── */
-#pdfModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:8888;display:none;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-#pdfModalOverlay.show{display:flex;}
-.pdf-modal{background:#fff;border-radius:24px;padding:2rem;width:100%;max-width:480px;box-shadow:0 24px 64px rgba(0,0,0,.3);animation:slideDown .25s ease;flex-shrink:0;margin:auto 0;}
-.pdf-modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--teal-dark);margin-bottom:.35rem;}
-.pdf-modal-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;}
-.pdf-type-tabs{display:flex;gap:6px;margin-bottom:1.5rem;}
-.pdf-type-btn{flex:1;padding:.6rem;border:1.5px solid var(--border);border-radius:10px;background:#faf9f7;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center;}
-.pdf-type-btn.active{border-color:var(--teal-dark);background:var(--teal-light);color:var(--teal-dark);font-weight:600;}
-.pdf-date-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.5rem;}
-.pdf-date-field label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-bottom:6px;}
-.pdf-date-field input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:#faf9f7;outline:none;transition:border-color .2s;}
-.pdf-date-field input:focus{border-color:var(--teal-mid);background:#fff;}
-.pdf-info-box{background:var(--teal-light);border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:var(--teal-dark);margin-bottom:1.5rem;display:flex;gap:8px;align-items:flex-start;}
-.pdf-info-box svg{width:16px;height:16px;flex-shrink:0;stroke:var(--teal-dark);fill:none;stroke-width:2;margin-top:1px;}
-.pdf-modal-actions{display:flex;gap:.75rem;}
-.pdf-cancel-btn{flex:1;padding:.8rem;border:1.5px solid var(--border);background:transparent;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;color:var(--muted);cursor:pointer;}
-.pdf-cancel-btn:hover{background:#f0ede6;}
-.pdf-dl-btn{flex:2;padding:.8rem;background:var(--teal-dark);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;}
-.pdf-dl-btn:hover{background:var(--teal-mid);}
-.pdf-err{background:var(--red-light);color:var(--red-dark);border-radius:8px;padding:.6rem .9rem;font-size:.8rem;margin-bottom:1rem;display:none;border-left:3px solid var(--red);}
-.pdf-err.show{display:block;}
+/* SUGGESTION POPUP */
+#suggPopupOverlay{position:fixed;inset:0;background:rgba(5,10,7,.5);z-index:7999;opacity:0;pointer-events:none;transition:opacity .3s ease;backdrop-filter:blur(4px);}
+#suggPopupOverlay.show{opacity:1;pointer-events:all;}
+#suggestionPopup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.88);z-index:8000;width:calc(100% - 2rem);max-width:480px;background:var(--cream);border-radius:var(--r3);box-shadow:0 32px 80px rgba(10,14,10,.4),0 0 0 1px var(--paper2);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .35s cubic-bezier(.34,1.4,.64,1);overflow:hidden;}
+#suggestionPopup.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:all;}
+.sugg-accent-bar{height:5px;width:100%;}
+.sugg-body{padding:1.6rem 1.75rem 1.75rem;}
+.sugg-eyebrow{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem;}
+.sugg-title{font-family:'DM Serif Display',serif;font-size:1.55rem;letter-spacing:-.02em;line-height:1.2;margin-bottom:.4rem;color:var(--ink);}
+.sugg-reading-pill{display:inline-flex;align-items:center;gap:7px;border-radius:20px;padding:.3rem .95rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:500;margin-bottom:1.3rem;}
+.sugg-tips{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.3rem;}
+.sugg-tip-item{display:flex;align-items:flex-start;gap:12px;background:var(--paper);border-radius:var(--r);padding:.75rem .9rem;border:1px solid var(--paper2);}
+.sugg-tip-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;line-height:1;}
+.sugg-tip-text{font-size:.84rem;color:var(--ink2);line-height:1.6;}
+.sugg-tip-text strong{font-weight:600;color:var(--ink);}
+.sugg-dismiss{width:100%;padding:.82rem;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s;}
+.sugg-dismiss:hover{opacity:.85}.sugg-dismiss:active{transform:scale(.98)}
+.sa-green{background:linear-gradient(90deg,var(--sage),var(--sage3));}
+.se-green{color:var(--sage2);}
+.sp-green{background:var(--sage5);color:var(--sage);border:1px solid var(--sage4);}
+.sd-green{background:var(--sage);color:#fff;}
+.sa-blue{background:linear-gradient(90deg,var(--teal),var(--teal2));}
+.se-blue{color:var(--teal2);}
+.sp-blue{background:var(--teal3);color:var(--teal);border:1px solid #b0dcea;}
+.sd-blue{background:var(--teal);color:#fff;}
+.sa-amber{background:linear-gradient(90deg,var(--amber),var(--amber2));}
+.se-amber{color:var(--amber2);}
+.sp-amber{background:var(--amber3);color:var(--amber);border:1px solid #f0c070;}
+.sd-amber{background:var(--amber);color:#fff;}
+.sa-red{background:linear-gradient(90deg,var(--red),var(--red2));}
+.se-red{color:var(--red2);}
+.sp-red{background:var(--red3);color:var(--red);border:1px solid #f0c0c0;}
+.sd-red{background:var(--red2);color:#fff;}
 
-/* ── HEADER ── */
-header{
-  background-color:var(--teal-dark);
-  background-image:
-    linear-gradient(135deg,rgba(4,31,26,0.78) 0%,rgba(8,80,65,0.68) 50%,rgba(4,31,26,0.82) 100%),
-    url('https://images.unsplash.com/photo-1628619876503-2db74e724757?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZGlhYmV0ZXN8ZW58MHx8MHx8fDA%3D');
-  background-size:cover;
-  background-position:center center;
-  background-repeat:no-repeat;
-  padding:2rem 2rem 3.5rem;
-  position:relative;
-  overflow:hidden;
-}
-header::before{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.04);top:-80px;right:-60px;}
-header::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.06);bottom:-40px;left:30%;}
-.header-inner{max-width:980px;margin:0 auto;position:relative;z-index:1;}
-.logo-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:1.5rem;}
-.logo-left{display:flex;align-items:center;gap:12px;}
-.logo-icon{width:44px;height:44px;background:var(--teal-mid);border-radius:12px;display:flex;align-items:center;justify-content:center;}
-.logo-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;}
-.site-name{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;font-weight:500;}
-.user-info-badge{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border-radius:12px;padding:.45rem .85rem .45rem .55rem;cursor:pointer;transition:background .2s;}
-.user-info-badge:hover{background:rgba(255,255,255,.2);}
-.user-avatar{width:42px;height:42px;border-radius:50%;background:var(--teal-mid);display:flex;align-items:center;justify-content:center;font-size:.88rem;color:#fff;font-weight:700;flex-shrink:0;overflow:hidden;border:2.5px solid rgba(255,255,255,.4);transition:border-color .2s,transform .2s;}
-.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.user-info-badge:hover .user-avatar{border-color:rgba(255,255,255,.85);transform:scale(1.05);}
-.user-name-display{color:#fff;font-size:.88rem;font-weight:500;}
-.user-edit-hint{color:rgba(255,255,255,.55);font-size:.72rem;}
-.header-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:#fff;font-weight:500;line-height:1.15;margin-bottom:.5rem;}
-.header-sub{color:rgba(255,255,255,.65);font-size:1rem;font-weight:300;}
-.wave-divider{height:28px;background:var(--bg);border-radius:28px 28px 0 0;margin-top:-14px;position:relative;z-index:2;}
+#pdfModalOverlay{position:fixed;inset:0;background:rgba(15,14,12,.55);backdrop-filter:blur(4px);z-index:8888;display:none;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto;}
+#pdfModalOverlay.show{display:flex}
+.pdf-modal{background:var(--cream);border-radius:var(--r2);padding:2rem;width:100%;max-width:460px;box-shadow:var(--sh2);flex-shrink:0;margin:auto 0;border:1px solid var(--paper2);}
+.pdf-modal-title{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:.3rem;}
+.pdf-modal-sub{font-size:.84rem;color:var(--ink3);margin-bottom:1.4rem;}
+.pdf-type-tabs{display:flex;gap:6px;margin-bottom:1.4rem;}
+.pdf-type-btn{flex:1;padding:.58rem;border:1.5px solid var(--paper2);border-radius:var(--r);background:var(--paper);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .2s;text-align:center;}
+.pdf-type-btn.active{border-color:var(--sage3);background:var(--sage5);color:var(--sage);font-weight:600;}
+.pdf-date-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.4rem;}
+.pdf-date-field label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);display:block;margin-bottom:5px;}
+.pdf-date-field input{width:100%;padding:.72rem 1rem;border:1.5px solid var(--paper2);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s;}
+.pdf-date-field input:focus{border-color:var(--sage3);background:#fff}
+.pdf-info-box{background:var(--sage5);border-radius:var(--r);padding:.7rem 1rem;font-size:.81rem;color:var(--sage);margin-bottom:1.4rem;display:flex;gap:8px;align-items:flex-start;border:1px solid var(--sage4);}
+.pdf-info-box svg{width:15px;height:15px;flex-shrink:0;stroke:var(--sage);fill:none;stroke-width:2;margin-top:1px;}
+.pdf-modal-actions{display:flex;gap:.75rem}
+.pdf-cancel-btn{flex:1;padding:.78rem;border:1.5px solid var(--paper2);background:transparent;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;color:var(--ink3);cursor:pointer;transition:background .2s;}
+.pdf-cancel-btn:hover{background:var(--paper)}
+.pdf-dl-btn{flex:2;padding:.78rem;background:var(--sage);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .2s;}
+.pdf-dl-btn:hover{background:var(--sage2)}
+.pdf-err{background:var(--red3);color:var(--red);border-radius:var(--r);padding:.58rem .9rem;font-size:.8rem;margin-bottom:.9rem;display:none;border-left:3px solid var(--red2);}
+.pdf-err.show{display:block}
 
-/* ── STATS ── */
-.stats-strip{background:var(--card);border-bottom:1px solid var(--border);}
-.stats-inner{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
-.stat-item{padding:1.25rem 1.5rem;border-right:1px solid var(--border);text-align:center;}
-.stat-item:last-child{border-right:none;}
-.stat-val{font-size:1.8rem;font-weight:600;color:var(--teal-dark);font-family:'Playfair Display',serif;line-height:1;}
-.stat-lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+header{background:#111a13;padding:2rem 2rem 3.5rem;position:relative;overflow:hidden;}
+header::after{content:'';position:absolute;top:0;right:0;bottom:0;width:420px;pointer-events:none;z-index:0;background:url('https://images.unsplash.com/photo-1628619876503-2db74e724757?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZGlhYmV0ZXN8ZW58MHx8MHx8fDA%3D') center/cover no-repeat;opacity:.12;filter:grayscale(50%) saturate(0.6);-webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.9) 0%,rgba(0,0,0,.5) 55%,transparent 100%);mask-image:linear-gradient(to left,rgba(0,0,0,.9) 0%,rgba(0,0,0,.5) 55%,transparent 100%);}
+header::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.025) 39px,rgba(255,255,255,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.025) 39px,rgba(255,255,255,.025) 40px);}
+.header-orb{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(45,90,61,.4) 0%,transparent 70%);top:-200px;right:-100px;pointer-events:none;z-index:1;}
+.header-orb2{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.18) 0%,transparent 70%);bottom:-100px;left:10%;pointer-events:none;z-index:1;}
+.header-inner{max-width:1000px;margin:0 auto;position:relative;z-index:2;}
+.logo-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2.5rem;}
+.logo-left{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+.site-name{font-family:'DM Serif Display',serif;font-size:1.4rem;color:#fff;}
+.user-badge{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:40px;padding:.35rem .9rem .35rem .4rem;cursor:pointer;transition:all .2s;}
+.user-badge:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:.82rem;color:#fff;font-weight:600;flex-shrink:0;overflow:hidden;border:2px solid rgba(255,255,255,.25);}
+.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.user-name{color:#fff;font-size:.85rem;font-weight:500}
+.user-edit-hint{color:rgba(255,255,255,.4);font-size:.68rem}
+.header-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(45,90,61,.5);border:1px solid rgba(90,158,112,.3);border-radius:20px;padding:.28rem .85rem;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.75);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+.header-title{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,5vw,3.4rem);color:#fff;font-weight:400;line-height:1.1;margin-bottom:.6rem;letter-spacing:-.02em}
+.header-title em{color:var(--gold3);font-style:normal}
+.header-sub{color:rgba(255,255,255,.45);font-size:.9rem;font-weight:300;}
+.wave{height:30px;background:var(--cream);border-radius:30px 30px 0 0;margin-top:-15px;position:relative;z-index:2}
 
-/* ── MAIN ── */
-main{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem;}
-.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:2rem;margin-bottom:1.5rem;}
-.card-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:500;color:var(--teal-dark);}
+.stats-strip{background:var(--cream);border-bottom:1px solid var(--paper2)}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{padding:1.1rem 1.4rem;border-right:1px solid var(--paper2);text-align:center}
+.stat-item:last-child{border-right:none}
+.stat-val{font-family:'DM Serif Display',serif;font-size:1.85rem;color:var(--sage);line-height:1}
+.stat-lbl{font-size:.67rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.09em;margin-top:4px}
 
-/* ── TABS ── */
-.tabs{display:flex;gap:4px;background:#f0ede6;border-radius:14px;padding:4px;margin-bottom:1.5rem;}
-.tab-btn{flex:1;padding:.6rem .4rem;border:none;background:transparent;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;}
-.tab-btn.active{background:var(--card);color:var(--teal-dark);box-shadow:0 1px 4px rgba(0,0,0,.08);}
-.tab-panel{display:none;}.tab-panel.active{display:block;}
+main{max-width:1000px;margin:0 auto;padding:1.75rem 1.5rem 5rem}
+.card{background:#fff;border-radius:var(--r2);border:1px solid var(--paper2);padding:1.75rem;margin-bottom:1.25rem;box-shadow:var(--sh)}
+.card-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);}
 
-/* ── CALENDAR ── */
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
-.cal-nav{background:none;border:1.5px solid var(--border);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--teal-dark);transition:background .2s;}
-.cal-nav:hover{background:var(--teal-light);}
-.cal-month-label{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:500;color:var(--teal-dark);}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.cal-dow{text-align:center;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:.4rem 0;}
-.cal-day{background:#faf9f7;border:1.5px solid var(--border);border-radius:14px;min-height:80px;padding:8px 8px 6px;cursor:pointer;transition:border-color .2s,background .15s;position:relative;}
-.cal-day:hover{border-color:var(--teal-mid);background:var(--teal-light);}
-.cal-day.today{border-color:var(--teal-mid);background:var(--teal-light);}
-.cal-day.today .day-num{color:var(--teal-dark);font-weight:700;}
-.cal-day.selected{border-color:var(--teal-dark);background:#c8e8da;}
-.cal-day.other-month{opacity:.35;cursor:default;pointer-events:none;}
-.day-num{font-size:.82rem;font-weight:500;color:var(--text);margin-bottom:5px;}
-.day-dots{display:flex;flex-direction:column;gap:3px;}
-.meal-dot{display:flex;align-items:center;gap:4px;font-size:.62rem;font-weight:500;border-radius:6px;padding:1px 5px;white-space:nowrap;}
-.dot-fasting{background:#e1f5ee;color:#085041;}.dot-lunch{background:#e6f1fb;color:#185fa5;}
-.dot-dinner{background:#eeedfe;color:#3c3489;}.dot-other{background:#f0ede6;color:#5f5e5a;}
-.dot-danger{background:var(--red-light)!important;color:var(--red-dark)!important;}
-.dot-warn{background:var(--amber-light)!important;color:var(--amber-dark)!important;}
+.tabs{display:flex;gap:3px;background:var(--paper);border-radius:var(--r2);padding:4px;margin-bottom:1.25rem;border:1px solid var(--paper2)}
+.tab-btn{flex:1;padding:.55rem .4rem;border:none;background:transparent;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn.active{background:#fff;color:var(--sage);box-shadow:0 1px 6px rgba(15,14,12,.1);font-weight:600}
+.tab-panel{display:none}.tab-panel.active{display:block}
 
-/* ── DAY PANEL ── */
-.day-panel{background:#f0faf6;border:1.5px solid var(--teal-mid);border-radius:18px;padding:1.5rem;margin-top:1.25rem;animation:slideDown .25s ease;}
-.day-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
-.day-panel-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--teal-dark);}
-.close-panel{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted);padding:4px;}
-.mini-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;background:var(--card);border-radius:14px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid var(--border);}
-.mini-form label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:5px;display:block;}
-.mini-form input,.mini-form select{width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:#faf9f7;outline:none;transition:border-color .2s;}
-.mini-form input:focus,.mini-form select:focus{border-color:var(--teal-mid);background:#fff;}
-.btn-add{padding:.65rem 1.25rem;background:var(--teal-dark);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s;}
-.btn-add:hover{background:var(--teal-mid);}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.cal-nav{background:none;border:1.5px solid var(--paper2);border-radius:var(--r);width:34px;height:34px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--sage);transition:all .2s}
+.cal-nav:hover{background:var(--sage5);border-color:var(--sage4)}
+.cal-month-label{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{text-align:center;font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:.35rem 0}
+.cal-day{background:var(--paper);border:1px solid var(--paper2);border-radius:var(--r);min-height:74px;padding:6px 7px 4px;cursor:pointer;transition:all .15s}
+.cal-day:hover{border-color:var(--sage3);background:var(--sage5);transform:translateY(-1px)}
+.cal-day.today{border-color:var(--sage3);background:var(--sage5)}
+.cal-day.today .day-num{color:var(--sage);font-weight:600}
+.cal-day.selected{border-color:var(--sage);background:var(--sage4)}
+.cal-day.other-month{opacity:.25;cursor:default;pointer-events:none}
+.day-num{font-size:.78rem;font-weight:500;color:var(--ink);margin-bottom:3px}
+.day-dots{display:flex;flex-direction:column;gap:2px}
+.meal-dot{display:flex;align-items:center;gap:3px;font-size:.58rem;font-weight:600;border-radius:5px;padding:1px 5px;white-space:nowrap}
+.dot-fasting{background:#e0f5ec;color:#1a5e38}.dot-lunch{background:#e3eeff;color:#1a3a7a}
+.dot-dinner{background:#f0ecff;color:#4a2a8a}.dot-other{background:var(--paper2);color:var(--ink3)}
+.dot-danger{background:var(--red3)!important;color:var(--red)!important}
+.dot-warn{background:var(--amber3)!important;color:var(--amber)!important}
 
-/* ── INSULIN CARD ── */
-.insulin-card{display:flex;align-items:center;gap:14px;border-radius:14px;padding:1rem 1.25rem;margin-bottom:1rem;border:1.5px solid;animation:slideDown .3s ease;}
-.ins-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-.ins-body{flex:1;}
-.ins-title{font-weight:700;font-size:.95rem;line-height:1.2;}
-.ins-range{font-size:.76rem;margin-top:3px;opacity:.85;line-height:1.4;}
-.ins-disclaimer{font-size:.67rem;margin-top:.6rem;opacity:.6;font-style:italic;line-height:1.4;}
-.ins-right{text-align:center;flex-shrink:0;}
-.ins-dose-badge{font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;white-space:nowrap;line-height:1;}
-.ins-dose-unit{font-size:.68rem;font-weight:500;opacity:.7;text-align:center;margin-top:2px;}
-.insulin-card.ins-safe{background:#f2faf0;border-color:var(--green);}
-.ins-safe .ins-title{color:var(--green-dark);}.ins-safe .ins-icon{background:#c8e69a;color:var(--green-dark);}.ins-safe .ins-dose-badge{color:var(--green-dark);}
-.insulin-card.ins-low-bg{background:#f0f7ff;border-color:var(--blue);}
-.ins-low-bg .ins-title{color:#0c447c;}.ins-low-bg .ins-icon{background:#b5d4f4;color:#0c447c;}.ins-low-bg .ins-dose-badge{color:#0c447c;}
-.insulin-card.ins-mild{background:#fff9ee;border-color:#f5c842;}
-.ins-mild .ins-title{color:#5a3205;}.ins-mild .ins-icon{background:#fde5a0;color:#5a3205;}.ins-mild .ins-dose-badge{color:#5a3205;}
-.insulin-card.ins-warn{background:#fff4e0;border-color:var(--amber);}
-.ins-warn .ins-title{color:#5a3205;}.ins-warn .ins-icon{background:#fac775;color:#5a3205;}.ins-warn .ins-dose-badge{color:#5a3205;}
-.insulin-card.ins-danger{background:#fff7f7;border-color:var(--red);}
-.ins-danger .ins-title{color:#5a1414;}.ins-danger .ins-icon{background:#f7c1c1;color:#5a1414;}.ins-danger .ins-dose-badge{color:#5a1414;}
+.day-panel{background:var(--sage5);border:1px solid var(--sage4);border-radius:var(--r2);padding:1.4rem;margin-top:1rem;animation:slideDown .3s ease}
+.day-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.day-panel-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--sage);}
+.close-panel{background:rgba(0,0,0,.06);border:none;font-size:.85rem;cursor:pointer;color:var(--ink3);padding:5px 8px;border-radius:8px;transition:background .2s}
+.close-panel:hover{background:rgba(0,0,0,.12)}
+.mini-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;background:#fff;border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.8rem;border:1px solid var(--paper2)}
+.mini-form label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:4px;display:block}
+.mini-form input,.mini-form select{width:100%;padding:.6rem .8rem;border:1.5px solid var(--paper2);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s}
+.mini-form input:focus,.mini-form select:focus{border-color:var(--sage3);background:#fff}
+.btn-add{padding:.6rem 1rem;background:var(--sage);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s}
+.btn-add:hover{background:var(--sage2)}
 
-/* ── DAY READINGS ── */
-.day-readings{display:flex;flex-direction:column;gap:8px;}
-.day-rec{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.day-rec-main{display:flex;align-items:center;gap:10px;padding:.75rem 1rem;}
-.dr-badge{min-width:64px;text-align:center;padding:4px 8px;border-radius:8px;font-weight:600;}
-.dr-badge .v{font-size:1.1rem;line-height:1;}.dr-badge .u{font-size:.58rem;opacity:.7;}
-.dr-info{flex:1;}
-.dr-meal{font-size:.85rem;font-weight:500;}.dr-time{font-size:.72rem;color:var(--muted);}
-.dr-notes{font-size:.72rem;color:var(--muted);font-style:italic;}
-.dr-pill{font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:12px;text-transform:uppercase;letter-spacing:.04em;}
-.pill-good{background:var(--green-light);color:var(--green);}.pill-warn{background:var(--amber-light);color:var(--amber-dark);}.pill-danger{background:var(--red-light);color:var(--red);}
-.dr-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:.9rem;transition:color .2s;padding:0 4px;}.dr-del:hover{color:var(--red);}
-.dr-insulin-row{display:flex;align-items:center;gap:8px;padding:.5rem 1rem .6rem;font-size:.76rem;border-top:1px solid var(--border);}
-.dri-none{background:#f2faf0;color:var(--green-dark);}
-.dri-low{background:#f0f7ff;color:#0c447c;}
-.dri-mild{background:#fffbee;color:#5a3205;}
-.dri-warn{background:#fff4e0;color:#5a3205;}
-.dri-danger{background:#fff7f7;color:#5a1414;}
-.dr-ins-units{font-weight:700;font-size:.95rem;margin-right:2px;}
-.empty-day{text-align:center;color:var(--muted);font-size:.88rem;padding:1.25rem 0;}
+.insulin-card{display:flex;align-items:center;gap:14px;border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:.9rem;border:1px solid;animation:slideDown .3s ease}
+.ins-icon{width:40px;height:40px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.ins-body{flex:1}
+.ins-title{font-weight:600;font-size:.9rem;line-height:1.2}
+.ins-range{font-size:.74rem;margin-top:3px;opacity:.8;line-height:1.45}
+.ins-disclaimer{font-size:.64rem;margin-top:.5rem;opacity:.5;font-style:italic;line-height:1.4}
+.ins-right{text-align:center;flex-shrink:0}
+.ins-dose-badge{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;white-space:nowrap;line-height:1}
+.ins-dose-unit{font-size:.65rem;opacity:.7;text-align:center;margin-top:2px}
+.insulin-card.ins-safe{background:var(--sage5);border-color:var(--sage4);color:var(--sage)}
+.insulin-card.ins-low-bg{background:var(--teal3);border-color:#b0dcea;color:var(--teal)}
+.insulin-card.ins-mild{background:#fffcf0;border-color:#f0df90;color:#6b5000}
+.insulin-card.ins-warn{background:var(--amber3);border-color:#f0c070;color:var(--amber)}
+.insulin-card.ins-danger{background:var(--red3);border-color:#f0c0c0;color:var(--red)}
+.ins-safe .ins-icon{background:var(--sage4)}.ins-low-bg .ins-icon{background:#c8e8f4}
+.ins-mild .ins-icon{background:#fde980}.ins-warn .ins-icon{background:#ffd090}
+.ins-danger .ins-icon{background:#fcc0c0}
 
-/* ── ADD FORM ── */
-.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;}
-.form-grid label{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:7px;display:block;}
-.form-grid input,.form-grid select{width:100%;padding:.85rem 1rem;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--text);background:#faf9f7;outline:none;transition:border-color .2s;}
-.form-grid input:focus,.form-grid select:focus{border-color:var(--teal-mid);background:#fff;}
-.btn-primary{width:100%;padding:.9rem;background:var(--teal-dark);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .2s,transform .1s;}
-.btn-primary:hover{background:var(--teal-mid);}.btn-primary:active{transform:scale(.98);}
-.add-insulin-wrap{margin-top:1.25rem;}
+.day-readings{display:flex;flex-direction:column;gap:7px}
+.day-rec{background:#fff;border:1px solid var(--paper2);border-radius:var(--r2);overflow:hidden;transition:box-shadow .2s}
+.day-rec:hover{box-shadow:var(--sh)}
+.day-rec-main{display:flex;align-items:center;gap:10px;padding:.7rem 1rem}
+.dr-badge{min-width:60px;text-align:center;padding:4px 7px;border-radius:var(--r)}
+.dr-badge .v{font-family:'DM Serif Display',serif;font-size:1.1rem;line-height:1}
+.dr-badge .u{font-size:.55rem;opacity:.65}
+.dr-info{flex:1}.dr-meal{font-size:.83rem;font-weight:500}.dr-time{font-size:.68rem;color:var(--ink3)}
+.dr-notes{font-size:.68rem;color:var(--ink3);font-style:italic}
+.dr-pill{font-size:.63rem;font-weight:600;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+.pill-good{background:var(--sage5);color:var(--sage)}.pill-warn{background:var(--amber3);color:var(--amber)}.pill-danger{background:var(--red3);color:var(--red)}
+.badge-good{background:var(--sage5);color:var(--sage)}.badge-warn{background:var(--amber3);color:var(--amber)}.badge-danger{background:var(--red3);color:var(--red)}
+.dr-del{background:none;border:none;cursor:pointer;color:var(--paper2);font-size:.85rem;transition:color .2s;padding:0 4px}.dr-del:hover{color:var(--red2)}
+.dr-insulin-row{display:flex;align-items:center;gap:7px;padding:.42rem 1rem .5rem;font-size:.73rem;border-top:1px solid var(--paper2)}
+.dri-none{background:var(--sage5);color:var(--sage)}.dri-low{background:var(--teal3);color:var(--teal)}.dri-mild{background:#fffcf0;color:#6b5000}
+.dri-warn{background:var(--amber3);color:var(--amber)}.dri-danger{background:var(--red3);color:var(--red)}
+.dr-ins-units{font-weight:600;font-size:.9rem;margin-right:2px}
+.empty-day{text-align:center;color:var(--ink3);font-size:.84rem;padding:1rem 0}
 
-/* ── ALERT ── */
-.alert-banner{display:none;padding:1rem 1.5rem;border-radius:14px;margin-bottom:1.5rem;border-left:4px solid;animation:slideDown .35s ease;}
-.alert-banner.show{display:flex;align-items:flex-start;gap:12px;}
-.alert-icon{font-size:1.4rem;flex-shrink:0;}
-.alert-title{font-weight:600;font-size:.95rem;margin-bottom:3px;}.alert-msg{font-size:.85rem;opacity:.85;line-height:1.5;}
-.alert-good{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
-.alert-warn{background:var(--amber-light);border-color:var(--amber);color:#4a2a05;}
-.alert-danger{background:var(--red-light);border-color:var(--red);color:#5a1414;}
-@keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.9rem}
+.form-grid label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:6px;display:block}
+.form-grid input,.form-grid select{width:100%;padding:.82rem 1rem;border:1.5px solid var(--paper2);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s,background .2s}
+.form-grid input:focus,.form-grid select:focus{border-color:var(--sage3);background:#fff}
+.btn-primary{width:100%;padding:.88rem;background:var(--sage);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;margin-top:.9rem;transition:background .2s,transform .1s;}
+.btn-primary:hover{background:var(--sage2)}.btn-primary:active{transform:scale(.98)}
+.add-insulin-wrap{margin-top:1rem}
 
-/* ── RECORDS LIST ── */
-.section-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem;}
-.pdf-row{display:flex;gap:.75rem;flex-wrap:wrap;}
-.btn-outline{padding:.55rem 1.1rem;border:1.5px solid var(--teal-mid);color:var(--teal-mid);background:transparent;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s;}
-.btn-outline:hover{background:var(--teal-light);}
-.btn-outline svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
-.btn-danger-link{background:none;border:none;color:var(--red);font-size:.82rem;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:500;transition:opacity .2s;}
-.btn-danger-link:hover{opacity:.65;}
-.records-list{display:flex;flex-direction:column;gap:.85rem;}
-.record-card{background:#faf9f7;border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:fadeIn .3s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
-.record-top{display:flex;align-items:center;gap:1.1rem;padding:1.1rem 1.4rem;}
-.record-level-badge{min-width:74px;text-align:center;padding:.45rem .65rem;border-radius:12px;}
-.record-level-badge .val{font-size:1.5rem;font-weight:600;font-family:'Playfair Display',serif;line-height:1;}
-.record-level-badge .unit{font-size:.62rem;opacity:.7;}
-.badge-good{background:var(--green-light);color:var(--green-dark);}
-.badge-warn{background:var(--amber-light);color:#4a2a05;}
-.badge-danger{background:var(--red-light);color:#5a1414;}
-.record-info{flex:1;}
-.record-meal{font-weight:600;font-size:.9rem;margin-bottom:2px;}
-.record-time{font-size:.76rem;color:var(--muted);}
-.record-notes{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:3px;}
-.record-status-pill{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
-.record-ins-strip{display:flex;align-items:center;gap:8px;padding:.55rem 1.4rem .65rem;font-size:.78rem;border-top:1px solid var(--border);}
-.empty-state{text-align:center;padding:3rem 1rem;color:var(--muted);}
-.empty-state svg{width:44px;height:44px;stroke:#ccc;fill:none;stroke-width:1.5;margin-bottom:.75rem;}
+.alert-banner{display:none;padding:.9rem 1.25rem;border-radius:var(--r2);margin-bottom:1.25rem;border-left:3px solid;animation:slideDown .35s ease}
+.alert-banner.show{display:flex;align-items:flex-start;gap:11px}
+.alert-icon{font-size:1.3rem;flex-shrink:0}
+.alert-title{font-weight:600;font-size:.9rem;margin-bottom:2px}.alert-msg{font-size:.81rem;opacity:.8;line-height:1.55}
+.alert-good{background:var(--sage5);border-color:var(--sage3);color:var(--sage)}
+.alert-warn{background:var(--amber3);border-color:var(--amber2);color:var(--amber)}
+.alert-danger{background:var(--red3);border-color:var(--red2);color:var(--red)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── INSULIN CHART TAB ── */
-.ins-chart-header{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;}
-.ins-chart-icon{width:48px;height:48px;background:var(--blue-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
-.ins-table-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--border);}
-.ins-table{width:100%;border-collapse:collapse;font-size:.88rem;}
-.ins-table th{background:var(--teal-dark);color:#fff;padding:.7rem 1rem;text-align:left;font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;}
-.ins-table th:nth-child(3),.ins-table td:nth-child(3){text-align:center;}
-.ins-table td{padding:.7rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;}
-.ins-table tr:last-child td{border-bottom:none;}
-.ins-table tr:nth-child(even) td{background:#faf9f7;}
-.ins-table tr:hover td{background:var(--teal-light);}
-.unit-chip{display:inline-flex;align-items:center;justify-content:center;padding:4px 14px;border-radius:20px;font-weight:700;font-size:.88rem;min-width:56px;}
-.uc-safe{background:var(--green-light);color:var(--green-dark);}
-.uc-blue{background:var(--blue-light);color:var(--blue-dark);}
-.uc-mild{background:#fef3cc;color:#7a4f00;}
-.uc-warn{background:var(--amber-light);color:var(--amber-dark);}
-.uc-danger{background:var(--red-light);color:var(--red-dark);}
-.ins-action-note{font-size:.75rem;color:var(--muted);}
-.disclaimer-box{background:#fff8e1;border:1px solid #f5c842;border-radius:12px;padding:1rem 1.25rem;margin-top:1.25rem;display:flex;gap:10px;align-items:flex-start;}
-.disclaimer-box svg{width:18px;height:18px;stroke:#b07c00;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
-.disclaimer-box p{font-size:.8rem;color:#5a3900;line-height:1.6;}
+.section-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
+.pdf-row{display:flex;gap:.7rem;flex-wrap:wrap}
+.btn-outline{padding:.5rem 1rem;border:1.5px solid var(--paper2);color:var(--sage);background:transparent;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
+.btn-outline:hover{background:var(--sage5);border-color:var(--sage4)}
+.btn-outline svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.btn-danger-link{background:none;border:none;color:var(--red2);font-size:.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:500;transition:opacity .2s}
+.btn-danger-link:hover{opacity:.65}
+.records-list{display:flex;flex-direction:column;gap:.75rem}
+.record-card{background:var(--paper);border:1px solid var(--paper2);border-radius:var(--r2);overflow:hidden;animation:fadeIn .3s ease;transition:box-shadow .2s}
+.record-card:hover{box-shadow:var(--sh)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.record-top{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem}
+.record-level-badge{min-width:66px;text-align:center;padding:.4rem .6rem;border-radius:var(--r)}
+.record-level-badge .val{font-family:'DM Serif Display',serif;font-size:1.4rem;line-height:1}
+.record-level-badge .unit{font-size:.58rem;opacity:.65}
+.record-info{flex:1}
+.record-meal{font-weight:500;font-size:.87rem;margin-bottom:2px}.record-time{font-size:.72rem;color:var(--ink3)}
+.record-notes{font-size:.72rem;color:var(--ink3);font-style:italic;margin-top:3px}
+.record-status-pill{font-size:.63rem;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.record-ins-strip{display:flex;align-items:center;gap:7px;padding:.48rem 1.25rem .55rem;font-size:.74rem;border-top:1px solid var(--paper2)}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--ink3)}
+.empty-state svg{width:40px;height:40px;stroke:var(--paper2);fill:none;stroke-width:1.5;margin-bottom:.75rem}
 
-/* ── MISC ── */
-.storage-notice{display:flex;align-items:center;gap:8px;background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:.6rem 1rem;font-size:.78rem;color:#2e7d32;margin-bottom:1.5rem;}
-.storage-dot{width:8px;height:8px;border-radius:50%;background:#43a047;flex-shrink:0;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.ref-bar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.5rem;margin-bottom:2.5rem;}
-.ref-dots{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.6rem;}
-.ref-dot{display:flex;align-items:center;gap:6px;font-size:.8rem;}
+.ins-chart-header{display:flex;align-items:center;gap:14px;margin-bottom:1.4rem}
+.ins-chart-icon{width:44px;height:44px;background:var(--sage5);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:1px solid var(--sage4)}
+.ins-table-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--paper2)}
+.ins-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.ins-table th{background:var(--sage);color:#fff;padding:.68rem 1rem;text-align:left;font-weight:500;font-size:.7rem;text-transform:uppercase;letter-spacing:.07em}
+.ins-table th:nth-child(3),.ins-table td:nth-child(3){text-align:center}
+.ins-table td{padding:.68rem 1rem;border-bottom:1px solid var(--paper2);vertical-align:middle}
+.ins-table tr:last-child td{border-bottom:none}
+.ins-table tr:nth-child(even) td{background:var(--paper)}
+.ins-table tr:hover td{background:var(--sage5)}
+.unit-chip{display:inline-flex;align-items:center;justify-content:center;padding:3px 12px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-weight:500;font-size:.82rem;min-width:52px}
+.uc-safe{background:var(--sage5);color:var(--sage)}.uc-blue{background:var(--teal3);color:var(--teal)}
+.uc-mild{background:#fef5d4;color:#7a4f00}.uc-warn{background:var(--amber3);color:var(--amber)}.uc-danger{background:var(--red3);color:var(--red)}
+.ins-action-note{font-size:.72rem;color:var(--ink3)}
+.disclaimer-box{background:var(--gold4);border:1px solid #e8d080;border-radius:var(--r2);padding:1rem 1.2rem;margin-top:1.2rem;display:flex;gap:10px;align-items:flex-start}
+.disclaimer-box svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
+.disclaimer-box p{font-size:.78rem;color:var(--amber);line-height:1.65}
+
+.storage-notice{display:flex;align-items:center;gap:8px;background:var(--sage5);border:1px solid var(--sage4);border-radius:var(--r);padding:.55rem 1rem;font-size:.75rem;color:var(--sage);margin-bottom:1.25rem}
+.storage-dot{width:7px;height:7px;border-radius:50%;background:var(--sage3);flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ref-bar{background:#fff;border:1px solid var(--paper2);border-radius:var(--r2);padding:1rem 1.4rem;margin-bottom:2.5rem;box-shadow:var(--sh)}
+.ref-dots{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:.5rem}
+.ref-dot{display:flex;align-items:center;gap:5px;font-size:.77rem;color:var(--ink2)}
 
 @media(max-width:680px){
-  .form-grid{grid-template-columns:1fr 1fr;}
-  .stats-inner{grid-template-columns:1fr 1fr;}
-  .stat-item:nth-child(2){border-right:none;}.stat-item:nth-child(3){border-right:1px solid var(--border);}
-  .mini-form{grid-template-columns:1fr 1fr;}
-  .cal-day{min-height:60px;}.meal-dot{display:none;}
-  .profile-grid{grid-template-columns:1fr;}
-  .user-name-display{display:none;}
-  .insulin-card{flex-direction:column;align-items:flex-start;}
-  .ins-right{display:flex;align-items:center;gap:12px;}
+  .form-grid{grid-template-columns:1fr 1fr}
+  .stats-inner{grid-template-columns:1fr 1fr}
+  .stat-item:nth-child(2){border-right:none}.stat-item:nth-child(3){border-right:1px solid var(--paper2)}
+  .mini-form{grid-template-columns:1fr 1fr}
+  .cal-day{min-height:55px}.meal-dot{display:none}
+  .profile-grid{grid-template-columns:1fr}
+  .user-name{display:none}
+  .insulin-card{flex-direction:column;align-items:flex-start}
+  .ins-right{display:flex;align-items:center;gap:12px}
 }
 </style>
 </head>
 <body>
 
-<!-- PROFILE MODAL -->
 <div id="profileOverlay">
   <div class="profile-card">
     <div class="profile-logo">
       <div class="profile-logo-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/></svg></div>
       <span class="profile-logo-name">GlucoTrack</span>
     </div>
-    <h2 class="profile-title">Welcome! Set up your profile</h2>
-    <p class="profile-sub">Your details appear on every downloaded report and personalise your experience.</p>
+    <h2 class="profile-title">Set up your profile</h2>
+    <p class="profile-sub">Your details appear on every report and personalise your experience.</p>
     <div class="profile-err" id="profileErr"></div>
-    <!-- PHOTO UPLOAD -->
     <input type="file" id="photoFileInput" accept="image/*" onchange="handlePhotoUpload(event)">
     <div class="photo-upload-wrap">
       <div class="photo-preview-circle" id="photoPreviewCircle" onclick="document.getElementById('photoFileInput').click()">
-        <span id="photoPlaceholder">&#128100;</span>
+        <span id="photoPlaceholder">👤</span>
       </div>
       <div class="photo-upload-right">
         <div class="photo-upload-label">Profile Photo (optional)</div>
-        <div class="photo-upload-hint">Your photo appears in the header. Tap circle or button to upload.</div>
+        <div class="photo-upload-hint">Tap to upload. Shows in the header.</div>
         <div class="photo-btns">
-          <button class="photo-choose-btn" onclick="document.getElementById('photoFileInput').click()">&#128247; Choose Photo</button>
-          <button class="photo-remove-btn" id="photoRemoveBtn" onclick="removePhoto()">&#10005; Remove</button>
+          <button class="photo-choose-btn" onclick="document.getElementById('photoFileInput').click()">📷 Choose</button>
+          <button class="photo-remove-btn" id="photoRemoveBtn" onclick="removePhoto()">✕ Remove</button>
         </div>
       </div>
     </div>
@@ -348,27 +327,40 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem;}
       <div class="profile-field full"><label>Full Name *</label><input type="text" id="p-name" placeholder="e.g. Rajesh Kumar" maxlength="80"></div>
       <div class="profile-field"><label>Age *</label><input type="number" id="p-age" placeholder="e.g. 52" min="1" max="120"></div>
       <div class="profile-field"><label>Gender *</label>
-        <select id="p-gender"><option value="">&#8212; Select &#8212;</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
+        <select id="p-gender"><option value="">— Select —</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
       </div>
       <div class="profile-field full"><label>Diabetes Type</label>
-        <select id="p-dtype"><option value="">&#8212; Select (optional) &#8212;</option><option>Type 1 Diabetes</option><option>Type 2 Diabetes</option><option>Gestational Diabetes</option><option>Pre-Diabetes</option><option>Other / Not diagnosed</option></select>
+        <select id="p-dtype"><option value="">— Select (optional) —</option><option>Type 1 Diabetes</option><option>Type 2 Diabetes</option><option>Gestational Diabetes</option><option>Pre-Diabetes</option><option>Other / Not diagnosed</option></select>
       </div>
-      <div class="profile-field full"><label>Treatment / Clinic Name *</label><input type="text" id="p-clinic" placeholder="e.g. Apollo Hospital, Dr. Sharma&#39;s Clinic"></div>
-      <div class="profile-field full"><label>Doctor / Treating Physician</label><input type="text" id="p-doctor" placeholder="e.g. Dr. Priya Sharma (optional)"></div>
+      <div class="profile-field full"><label>Treatment / Clinic Name *</label><input type="text" id="p-clinic" placeholder="e.g. Apollo Hospital"></div>
+      <div class="profile-field full"><label>Doctor / Physician</label><input type="text" id="p-doctor" placeholder="e.g. Dr. Priya Sharma (optional)"></div>
     </div>
-    <button class="profile-btn" onclick="saveProfile()">Save &amp; Start Tracking &#8594;</button>
+    <button class="profile-btn" onclick="saveProfile()">Save &amp; Start Tracking →</button>
+  </div>
+</div>
+
+<!-- SUGGESTION POPUP -->
+<div id="suggPopupOverlay" onclick="closeSuggPopup()"></div>
+<div id="suggestionPopup">
+  <div class="sugg-accent-bar" id="suggAccentBar"></div>
+  <div class="sugg-body">
+    <div class="sugg-eyebrow" id="suggEyebrow"></div>
+    <div class="sugg-title" id="suggTitle"></div>
+    <div class="sugg-reading-pill" id="suggReadingPill"></div>
+    <div class="sugg-tips" id="suggTips"></div>
+    <button class="sugg-dismiss" id="suggDismiss" onclick="closeSuggPopup()">Got it ✓</button>
   </div>
 </div>
 
 <!-- PDF MODAL -->
 <div id="pdfModalOverlay">
   <div class="pdf-modal">
-    <div class="pdf-modal-title">&#128196; Download Report</div>
+    <div class="pdf-modal-title">Download Report</div>
     <div class="pdf-modal-sub">Choose a report type or set a custom date range.</div>
     <div class="pdf-type-tabs">
-      <div class="pdf-type-btn active" id="pdfTypeWeekly"  onclick="setPdfType('weekly')">&#128197; Last 7 Days</div>
-      <div class="pdf-type-btn"        id="pdfTypeMonthly" onclick="setPdfType('monthly')">&#128199; This Month</div>
-      <div class="pdf-type-btn"        id="pdfTypeCustom"  onclick="setPdfType('custom')">&#9998; Custom Range</div>
+      <div class="pdf-type-btn active" id="pdfTypeWeekly" onclick="setPdfType('weekly')">Last 7 Days</div>
+      <div class="pdf-type-btn" id="pdfTypeMonthly" onclick="setPdfType('monthly')">This Month</div>
+      <div class="pdf-type-btn" id="pdfTypeCustom" onclick="setPdfType('custom')">Custom</div>
     </div>
     <div id="pdfInfoBox" class="pdf-info-box">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -381,64 +373,63 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem;}
     <div class="pdf-err" id="pdfErr"></div>
     <div class="pdf-modal-actions">
       <button class="pdf-cancel-btn" onclick="closePdfModal()">Cancel</button>
-      <button class="pdf-dl-btn"     onclick="confirmDownloadPDF()">&#8659; Download PDF</button>
+      <button class="pdf-dl-btn" onclick="confirmDownloadPDF()">↓ Download PDF</button>
     </div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="appWrap">
 <header>
+  <div class="header-orb"></div><div class="header-orb2"></div>
   <div class="header-inner">
     <div class="logo-row">
       <div class="logo-left">
         <div class="logo-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/></svg></div>
         <span class="site-name">GlucoTrack</span>
       </div>
-      <div class="user-info-badge" onclick="editProfile()" title="Edit profile">
+      <div class="user-badge" onclick="editProfile()" title="Edit profile">
         <div class="user-avatar" id="userAvatar"><span id="userAvatarInitials">?</span></div>
-        <div><div class="user-name-display" id="userNameDisplay">&#8212;</div><div class="user-edit-hint">Edit profile</div></div>
+        <div><div class="user-name" id="userNameDisplay">—</div><div class="user-edit-hint">Edit profile</div></div>
       </div>
     </div>
-    <h1 class="header-title">Your Daily<br>Blood Sugar Journal</h1>
-    <p class="header-sub">Track readings &middot; Get instant insulin suggestions &middot; Stay in control</p>
+    <div class="header-eyebrow">Personal Health Journal</div>
+    <h1 class="header-title">Your Daily<br><em>Blood Sugar</em> Journal</h1>
+    <p class="header-sub">Track readings · Smart suggestions · Stay in control</p>
   </div>
 </header>
-<div class="wave-divider"></div>
+<div class="wave"></div>
+
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat-item"><div class="stat-val" id="stat-total">0</div><div class="stat-lbl">Total Readings</div></div>
-    <div class="stat-item"><div class="stat-val" id="stat-avg">&#8212;</div><div class="stat-lbl">Average mg/dL</div></div>
-    <div class="stat-item"><div class="stat-val" id="stat-high">&#8212;</div><div class="stat-lbl">Highest Today</div></div>
-    <div class="stat-item"><div class="stat-val" id="stat-low">&#8212;</div><div class="stat-lbl">Lowest Today</div></div>
+    <div class="stat-item"><div class="stat-val" id="stat-avg">—</div><div class="stat-lbl">Average mg/dL</div></div>
+    <div class="stat-item"><div class="stat-val" id="stat-high">—</div><div class="stat-lbl">Highest Today</div></div>
+    <div class="stat-item"><div class="stat-val" id="stat-low">—</div><div class="stat-lbl">Lowest Today</div></div>
   </div>
 </div>
 
 <main>
   <div class="storage-notice">
     <span class="storage-dot"></span>
-    <span>Readings are saved locally in this browser and persist across sessions.</span>
+    <span>All readings are <strong>saved permanently</strong> in your browser. They stay even after closing.</span>
   </div>
-
   <div class="alert-banner" id="alertBanner">
     <div class="alert-icon" id="alertIcon"></div>
     <div><div class="alert-title" id="alertTitle"></div><div class="alert-msg" id="alertMsg"></div></div>
   </div>
-
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('calendar',this)">&#128197; Calendar</button>
-    <button class="tab-btn" onclick="switchTab('add',this)">&#10133; Add Reading</button>
-    <button class="tab-btn" onclick="switchTab('list',this)">&#128203; All Records</button>
-    <button class="tab-btn" onclick="switchTab('insulin',this)">&#128137; Insulin Chart</button>
+    <button class="tab-btn active" onclick="switchTab('calendar',this)">📅 Calendar</button>
+    <button class="tab-btn" onclick="switchTab('add',this)">+ Add Reading</button>
+    <button class="tab-btn" onclick="switchTab('list',this)">📋 All Records</button>
+    <button class="tab-btn" onclick="switchTab('insulin',this)">💉 Insulin Chart</button>
   </div>
 
-  <!-- CALENDAR TAB -->
   <div class="tab-panel active" id="tab-calendar">
     <div class="card">
       <div class="cal-header">
-        <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
         <div class="cal-month-label" id="calMonthLabel"></div>
-        <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
       </div>
       <div class="cal-grid">
         <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
@@ -448,16 +439,12 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem;}
       <div class="day-panel" id="dayPanel" style="display:none;">
         <div class="day-panel-header">
           <div class="day-panel-title" id="dayPanelTitle"></div>
-          <button class="close-panel" onclick="closePanel()">&#10005;</button>
+          <button class="close-panel" onclick="closePanel()">✕</button>
         </div>
         <div class="mini-form">
           <div><label>Blood Sugar (mg/dL)</label><input type="number" id="dp-sugar" placeholder="e.g. 110" min="40" max="600"></div>
           <div><label>Meal / Timing</label>
-            <select id="dp-meal">
-              <option>Fasting</option><option>After Breakfast</option><option>Pre-Lunch</option>
-              <option>Lunch</option><option>Post-Lunch</option><option>Pre-Dinner</option>
-              <option>Dinner</option><option>Post-Dinner</option><option>Bedtime</option>
-            </select>
+            <select id="dp-meal"><option>Fasting</option><option>After Breakfast</option><option>Pre-Lunch</option><option>Lunch</option><option>Post-Lunch</option><option>Pre-Dinner</option><option>Dinner</option><option>Post-Dinner</option><option>Bedtime</option></select>
           </div>
           <div><label>Notes (optional)</label><input type="text" id="dp-notes" placeholder="e.g. after walk"></div>
           <div><label>&nbsp;</label><button class="btn-add" onclick="saveDayReading()">+ Add</button></div>
@@ -466,156 +453,187 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem;}
         <div class="day-readings" id="dayReadingsList"></div>
       </div>
     </div>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;padding:0 0 .5rem .25rem;">
-      <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block;"></span>Normal (70&#8211;140)</span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:10px;height:10px;border-radius:50%;background:var(--amber);display:inline-block;"></span>Caution</span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;"></span>Danger</span>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;padding:0 0 .5rem .25rem">
+      <span style="display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--ink3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--sage3);display:inline-block"></span>Normal (70–140)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--ink3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);display:inline-block"></span>Caution (141–199)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--ink3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);display:inline-block"></span>Danger (≥200 or &lt;60)</span>
     </div>
   </div>
 
-  <!-- ADD TAB -->
   <div class="tab-panel" id="tab-add">
     <div class="card">
-      <div class="card-title" style="margin-bottom:1.5rem;">Add a Reading</div>
+      <div class="card-title" style="margin-bottom:1.4rem">Add a Reading</div>
       <div class="form-grid">
         <div><label>Blood Sugar (mg/dL)</label><input type="number" id="f-sugar" placeholder="e.g. 120" min="40" max="600"></div>
         <div><label>Date</label><input type="date" id="f-date"></div>
         <div><label>Time</label><input type="time" id="f-time"></div>
         <div><label>Meal / Timing</label>
-          <select id="f-meal">
-            <option>Fasting</option><option>After Breakfast</option><option>Pre-Lunch</option>
-            <option>Lunch</option><option>Post-Lunch</option><option>Pre-Dinner</option>
-            <option>Dinner</option><option>Post-Dinner</option><option>Bedtime</option>
-          </select>
+          <select id="f-meal"><option>Fasting</option><option>After Breakfast</option><option>Pre-Lunch</option><option>Lunch</option><option>Post-Lunch</option><option>Pre-Dinner</option><option>Dinner</option><option>Post-Dinner</option><option>Bedtime</option></select>
         </div>
         <div style="grid-column:1/-1"><label>Notes (optional)</label><input type="text" id="f-notes" placeholder="e.g. After exercise, stress, illness"></div>
       </div>
-      <button class="btn-primary" onclick="saveFromForm()">Save Reading</button>
+      <button class="btn-primary" id="saveBtnMain" onclick="saveFromForm()">Save Reading</button>
       <div id="add-insulin-wrap" class="add-insulin-wrap"></div>
     </div>
   </div>
 
-  <!-- LIST TAB -->
   <div class="tab-panel" id="tab-list">
     <div class="card">
       <div class="section-header">
-        <div class="card-title">All Readings <span id="recordsCount" style="font-size:.9rem;font-weight:400;color:var(--muted);"></span></div>
+        <div class="card-title">All Readings <span id="recordsCount" style="font-size:.85rem;font-weight:400;color:var(--ink3)"></span></div>
         <div class="pdf-row">
           <button class="btn-outline" onclick="openPdfModal()">
             <svg viewBox="0 0 24 24"><path d="M12 15V3M8 11l4 4 4-4"/><path d="M3 18h18v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"/></svg>Download Report
           </button>
-          <button class="btn-danger-link" onclick="clearAll()" style="margin-left:auto;">&#128465; Clear all</button>
+          <button class="btn-danger-link" onclick="clearAll()" style="margin-left:auto">🗑 Clear all</button>
         </div>
       </div>
       <div class="records-list" id="recordsList"></div>
     </div>
   </div>
 
-  <!-- INSULIN CHART TAB -->
   <div class="tab-panel" id="tab-insulin">
     <div class="card">
       <div class="ins-chart-header">
-        <div class="ins-chart-icon">&#128137;</div>
+        <div class="ins-chart-icon">💉</div>
         <div>
-          <div class="card-title" style="margin-bottom:2px;">Insulin Dosing Chart</div>
-          <div style="font-size:.8rem;color:var(--muted);">Rapid-acting insulin (NovoRapid / Humalog) &mdash; prescribed sliding scale</div>
+          <div class="card-title" style="margin-bottom:2px">Insulin Dosing Chart</div>
+          <div style="font-size:.76rem;color:var(--ink3)">Rapid-acting insulin (NovoRapid / Humalog) — prescribed sliding scale</div>
         </div>
       </div>
       <div class="ins-table-wrap">
         <table class="ins-table">
-          <thead>
-            <tr>
-              <th>Blood Sugar Range</th>
-              <th>Status</th>
-              <th>Insulin Units</th>
-              <th>Action / Guidance</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Blood Sugar Range</th><th>Status</th><th>Insulin Units</th><th>Action / Guidance</th></tr></thead>
           <tbody>
-            <tr><td><strong>Below 60 mg/dL</strong></td><td>&#128308; Critical Low</td><td><span class="unit-chip uc-danger">0 Units</span></td><td class="ins-action-note">&#9888;&#65039; No insulin &mdash; treat hypoglycemia immediately. Take glucose tablets or juice. Seek help.</td></tr>
-            <tr><td><strong>60 &ndash; 99 mg/dL</strong></td><td>&#128993; Low / Borderline</td><td><span class="unit-chip uc-blue">0 Units</span></td><td class="ins-action-note">No insulin needed &mdash; monitor closely, have a small snack.</td></tr>
-            <tr><td><strong>100 &ndash; 140 mg/dL</strong></td><td>&#128994; Normal</td><td><span class="unit-chip uc-safe">3 Units</span></td><td class="ins-action-note">Standard maintenance dose before meal.</td></tr>
-            <tr><td><strong>141 &ndash; 180 mg/dL</strong></td><td>&#128993; Slightly High</td><td><span class="unit-chip uc-mild">4 Units</span></td><td class="ins-action-note">Mild correction + meal coverage.</td></tr>
-            <tr><td><strong>181 &ndash; 220 mg/dL</strong></td><td>&#128993; High</td><td><span class="unit-chip uc-warn">6 Units</span></td><td class="ins-action-note">Correction dose required. Stay hydrated.</td></tr>
-            <tr><td><strong>221 &ndash; 260 mg/dL</strong></td><td>&#128308; Very High</td><td><span class="unit-chip uc-warn">8 Units</span></td><td class="ins-action-note">Higher correction needed. Monitor closely.</td></tr>
-            <tr><td><strong>261 &ndash; 300 mg/dL</strong></td><td>&#128308; Very High</td><td><span class="unit-chip uc-danger">10 Units</span></td><td class="ins-action-note">Significant correction. Consider calling doctor.</td></tr>
-            <tr><td><strong>301 &ndash; 350 mg/dL</strong></td><td>&#128308; Dangerously High</td><td><span class="unit-chip uc-danger">12 Units</span></td><td class="ins-action-note">&#9888;&#65039; Urgent &mdash; consult doctor today.</td></tr>
-            <tr><td><strong>351 &ndash; 400 mg/dL</strong></td><td>&#128308; Dangerously High</td><td><span class="unit-chip uc-danger">14 Units</span></td><td class="ins-action-note">&#9888;&#65039; Urgent &mdash; consult doctor immediately.</td></tr>
-            <tr><td><strong>Above 400 mg/dL</strong></td><td>&#128308; Critical</td><td><span class="unit-chip uc-danger">16 Units</span></td><td class="ins-action-note">&#9940; EMERGENCY &mdash; seek medical attention NOW.</td></tr>
+            <tr><td><strong>Below 60 mg/dL</strong></td><td>🔴 Critical Low</td><td><span class="unit-chip uc-danger">0 Units</span></td><td class="ins-action-note">No insulin — treat hypoglycemia immediately.</td></tr>
+            <tr><td><strong>60 – 99 mg/dL</strong></td><td>🟡 Low / Borderline</td><td><span class="unit-chip uc-blue">0 Units</span></td><td class="ins-action-note">No insulin needed — monitor, have a small snack.</td></tr>
+            <tr><td><strong>100 – 140 mg/dL</strong></td><td>🟢 Normal</td><td><span class="unit-chip uc-safe">3 Units</span></td><td class="ins-action-note">Standard maintenance dose before meal.</td></tr>
+            <tr><td><strong>141 – 180 mg/dL</strong></td><td>🟡 Slightly High</td><td><span class="unit-chip uc-mild">4 Units</span></td><td class="ins-action-note">Mild correction + meal coverage.</td></tr>
+            <tr><td><strong>181 – 220 mg/dL</strong></td><td>🟡 High</td><td><span class="unit-chip uc-warn">6 Units</span></td><td class="ins-action-note">Correction dose required. Stay hydrated.</td></tr>
+            <tr><td><strong>221 – 260 mg/dL</strong></td><td>🔴 Very High</td><td><span class="unit-chip uc-warn">8 Units</span></td><td class="ins-action-note">Higher correction needed. Monitor closely.</td></tr>
+            <tr><td><strong>261 – 300 mg/dL</strong></td><td>🔴 Very High</td><td><span class="unit-chip uc-danger">10 Units</span></td><td class="ins-action-note">Significant correction. Consider calling doctor.</td></tr>
+            <tr><td><strong>301 – 350 mg/dL</strong></td><td>🔴 Dangerously High</td><td><span class="unit-chip uc-danger">12 Units</span></td><td class="ins-action-note">⚠️ Urgent — consult doctor today.</td></tr>
+            <tr><td><strong>351 – 400 mg/dL</strong></td><td>🔴 Dangerously High</td><td><span class="unit-chip uc-danger">14 Units</span></td><td class="ins-action-note">⚠️ Urgent — consult doctor immediately.</td></tr>
+            <tr><td><strong>Above 400 mg/dL</strong></td><td>🔴 Critical</td><td><span class="unit-chip uc-danger">16 Units</span></td><td class="ins-action-note">🚨 EMERGENCY — seek medical attention NOW.</td></tr>
           </tbody>
         </table>
       </div>
       <div class="disclaimer-box">
         <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <p><strong>Medical Disclaimer:</strong> This insulin dosing chart reflects a prescribed sliding scale provided by your doctor. Always verify doses with your healthcare provider before injecting. Never adjust insulin without medical guidance. In case of very high (&gt;300) or very low (&lt;70) readings, contact your doctor or go to the nearest hospital immediately. This app is for personal tracking only and does not replace professional medical advice.</p>
+        <p><strong>Medical Disclaimer:</strong> This chart reflects a prescribed sliding scale from your doctor. Always verify doses before injecting. Never adjust insulin without medical guidance. For readings above 300 or below 70, contact your doctor immediately. This app is for personal tracking only.</p>
       </div>
     </div>
   </div>
-
 </main>
 
-<div class="ref-bar" style="max-width:980px;margin:0 auto 2.5rem;padding:1.1rem 1.5rem;">
-  <p style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">Reference Ranges (mg/dL)</p>
+<div class="ref-bar" style="max-width:1000px;margin:0 auto 2.5rem;padding:1rem 1.4rem">
+  <p style="font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3)">Reference Ranges (mg/dL)</p>
   <div class="ref-dots">
-    <div class="ref-dot"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block;"></span><strong>Normal:</strong>&nbsp;70&#8211;140</div>
-    <div class="ref-dot"><span style="width:10px;height:10px;border-radius:50%;background:var(--amber);display:inline-block;"></span><strong>Caution:</strong>&nbsp;141&#8211;199 or 60&#8211;69</div>
-    <div class="ref-dot"><span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;"></span><strong>Danger:</strong>&nbsp;&ge;200 or &lt;60</div>
+    <div class="ref-dot"><span style="width:8px;height:8px;border-radius:50%;background:var(--sage3);display:inline-block"></span><strong>Normal:</strong>&nbsp;70–140</div>
+    <div class="ref-dot"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);display:inline-block"></span><strong>Caution:</strong>&nbsp;141–199 or 60–69</div>
+    <div class="ref-dot"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);display:inline-block"></span><strong>Danger:</strong>&nbsp;≥200 or &lt;60</div>
   </div>
 </div>
 </div>
 
 <script>
-const REC_KEY='glucotrack_v2_local', PROF_KEY='glucotrack_profile';
+const REC_KEY='glucotrack_v2_local',PROF_KEY='glucotrack_profile',PHOTO_KEY='glucotrack_photo';
 function getRecords(){try{return JSON.parse(localStorage.getItem(REC_KEY))||[];}catch(e){return[];}}
-function saveRecords(r){try{localStorage.setItem(REC_KEY,JSON.stringify(r));}catch(e){alert('Storage full! Export a PDF and clear old records.');}}
+function saveRecords(r){try{localStorage.setItem(REC_KEY,JSON.stringify(r));}catch(e){alert('Storage full! Please export PDF and clear old records.');}}
 function getProfile(){try{return JSON.parse(localStorage.getItem(PROF_KEY))||null;}catch(e){return null;}}
 function saveProfData(p){localStorage.setItem(PROF_KEY,JSON.stringify(p));}
 
 const INS=[
-  {min:0,  max:59,  units:null, label:'Below 60',     theme:'ins-low-bg', icon:'&#128167;', title:'Critical Low \u2014 NO Insulin', action:'Treat hypoglycemia first. Take glucose tablets or juice immediately.'},
-  {min:60, max:99,  units:0,    label:'60\u201399',   theme:'ins-safe',   icon:'&#9989;',   title:'Normal-Low \u2014 No Insulin Needed', action:'Monitor closely. Have a small snack if needed.'},
-  {min:100,max:140, units:3,    label:'100\u2013140', theme:'ins-safe',   icon:'&#9989;',   title:'Normal \u2014 3 Units', action:'Standard maintenance dose before meal.'},
-  {min:141,max:180, units:4,    label:'141\u2013180', theme:'ins-mild',   icon:'&#128137;', title:'Slightly High \u2014 4 Units', action:'Mild correction + meal coverage.'},
-  {min:181,max:220, units:6,    label:'181\u2013220', theme:'ins-warn',   icon:'&#128137;', title:'High \u2014 6 Units', action:'Correction dose required. Stay hydrated.'},
-  {min:221,max:260, units:8,    label:'221\u2013260', theme:'ins-warn',   icon:'&#128137;', title:'Very High \u2014 8 Units', action:'Higher correction needed. Monitor closely.'},
-  {min:261,max:300, units:10,   label:'261\u2013300', theme:'ins-danger', icon:'&#9888;&#65039;', title:'Very High \u2014 10 Units', action:'Significant correction. Consider calling your doctor.'},
-  {min:301,max:350, units:12,   label:'301\u2013350', theme:'ins-danger', icon:'&#9888;&#65039;', title:'Dangerously High \u2014 12 Units', action:'Urgent \u2014 consult your doctor today.'},
-  {min:351,max:400, units:14,   label:'351\u2013400', theme:'ins-danger', icon:'&#9888;&#65039;', title:'Dangerously High \u2014 14 Units', action:'Urgent \u2014 consult your doctor immediately.'},
-  {min:401,max:9999,units:16,   label:'Above 400',    theme:'ins-danger', icon:'&#128680;', title:'CRITICAL \u2014 16 Units', action:'EMERGENCY \u2014 seek medical attention NOW.'},
+  {min:0,  max:59,  units:null,label:'Below 60',theme:'ins-low-bg',icon:'💧',title:'Critical Low — NO Insulin',action:'Treat hypoglycemia first. Take glucose tablets or juice immediately.'},
+  {min:60, max:99,  units:0,  label:'60–99',  theme:'ins-safe',  icon:'✅',title:'Normal-Low — No Insulin Needed',action:'Monitor closely. Have a small snack if needed.'},
+  {min:100,max:140, units:3,  label:'100–140',theme:'ins-safe',  icon:'✅',title:'Normal — 3 Units',action:'Standard maintenance dose before meal.'},
+  {min:141,max:180, units:4,  label:'141–180',theme:'ins-mild',  icon:'💉',title:'Slightly High — 4 Units',action:'Mild correction + meal coverage.'},
+  {min:181,max:220, units:6,  label:'181–220',theme:'ins-warn',  icon:'💉',title:'High — 6 Units',action:'Correction dose required. Stay hydrated.'},
+  {min:221,max:260, units:8,  label:'221–260',theme:'ins-warn',  icon:'💉',title:'Very High — 8 Units',action:'Higher correction needed. Monitor closely.'},
+  {min:261,max:300, units:10, label:'261–300',theme:'ins-danger',icon:'⚠️',title:'Very High — 10 Units',action:'Significant correction. Consider calling your doctor.'},
+  {min:301,max:350, units:12, label:'301–350',theme:'ins-danger',icon:'⚠️',title:'Dangerously High — 12 Units',action:'Urgent — consult your doctor today.'},
+  {min:351,max:400, units:14, label:'351–400',theme:'ins-danger',icon:'⚠️',title:'Dangerously High — 14 Units',action:'Urgent — consult your doctor immediately.'},
+  {min:401,max:9999,units:16, label:'Above 400',theme:'ins-danger',icon:'🚨',title:'CRITICAL — 16 Units',action:'EMERGENCY — seek medical attention NOW.'},
 ];
 function getIns(s){return INS.find(r=>s>=r.min&&s<=r.max)||INS[INS.length-1];}
-function insUnitsDisplay(s){const r=getIns(s);if(r.units===null)return'None';return r.units+' U';}
+
+/* ── SMART SUGGESTIONS ── */
+const SUGG={
+  critical_low:{color:'red',eyebrow:'🚨 Act immediately — Critical Low',title:'Severely Low Blood Sugar',tips:[
+    {i:'🍬',t:'<strong>Right now:</strong> Eat 15g of fast carbs — 4 glucose tablets, half a glass of juice, or 3 tsp of sugar in water.'},
+    {i:'🛑',t:'<strong>Do NOT take insulin.</strong> Sit or lie down. Do not walk around or exercise.'},
+    {i:'⏱',t:'<strong>Re-check in 15 minutes.</strong> If still below 70 mg/dL, repeat carbs and check again.'},
+    {i:'📞',t:'<strong>Tell someone nearby.</strong> If dizzy, confused or shaky — call for help. Do not drive.'},
+    {i:'🍽',t:'After recovering, eat a snack with <strong>carbs + protein</strong> (roti + dal, or biscuits + milk).'},
+  ]},
+  low:{color:'blue',eyebrow:'⚠️ Low reading — have a snack now',title:'Below Normal Range',tips:[
+    {i:'🍌',t:'<strong>Have a small snack now</strong> — a banana, glass of milk, 2–3 biscuits, or crackers with peanut butter.'},
+    {i:'🧃',t:'Drink a small glass of <strong>juice or sugar water</strong> if you feel lightheaded.'},
+    {i:'🚶',t:'<strong>Avoid intense exercise</strong> right now. Light walking is fine after eating.'},
+    {i:'⏱',t:'<strong>Re-check in 30 minutes</strong> to confirm levels have risen back to normal.'},
+  ]},
+  normal:{color:'green',eyebrow:'✅ Great reading — keep it up!',title:'Healthy Blood Sugar Range',tips:[
+    {i:'🥗',t:'Levels are in a <strong>healthy range</strong>. Keep balanced meals — fibre, protein, healthy fats. Dal, sabzi, roti, curd work great.'},
+    {i:'🚶',t:'A <strong>20–30 min walk after meals</strong> helps keep levels stable all day. Even 10 min helps!'},
+    {i:'💧',t:'Stay hydrated — aim for <strong>8–10 glasses of water</strong> daily. Avoid sugary drinks.'},
+    {i:'😴',t:'Good sleep (<strong>7–8 hours</strong>) helps regulate blood sugar. Keep a consistent sleep schedule.'},
+  ]},
+  slightly_high:{color:'amber',eyebrow:'📈 Slightly high — easy steps to lower it',title:'A Little Above Normal',tips:[
+    {i:'🚶',t:'<strong>Go for a brisk 20–30 min walk right now.</strong> Even a 10-min stroll after eating lowers blood sugar noticeably.'},
+    {i:'💧',t:'Drink <strong>2–3 large glasses of water.</strong> Hydration helps kidneys flush excess sugar.'},
+    {i:'🍚',t:'For your next meal, <strong>reduce white rice, bread, or sweets.</strong> Add more vegetables, dal, and protein.'},
+    {i:'🧘',t:'<strong>Take 5 deep breaths.</strong> Stress raises cortisol which spikes blood sugar. A few minutes of calm helps.'},
+  ]},
+  high:{color:'amber',eyebrow:'📊 High reading — take action now',title:'Blood Sugar Is High',tips:[
+    {i:'💉',t:'<strong>Take your prescribed insulin correction dose</strong> per the chart, then go for a <strong>30–45 min brisk walk.</strong>'},
+    {i:'💧',t:'Drink plenty of water — at least <strong>3–4 large glasses</strong> over the next 2 hours.'},
+    {i:'🥦',t:'Skip sugary drinks, white rice, and sweets. Choose <strong>dal, sabzi, and roti in small portions.</strong>'},
+    {i:'⏱',t:'<strong>Re-check in 2 hours.</strong> If still above 200 mg/dL, contact your doctor or clinic.'},
+  ]},
+  very_high:{color:'red',eyebrow:'🔴 Very high — urgent steps needed',title:'Significantly Elevated Sugar',tips:[
+    {i:'💉',t:'<strong>Take your prescribed correction dose immediately</strong> as per your insulin sliding scale chart.'},
+    {i:'💧',t:'<strong>Drink water constantly</strong> — a full glass every 20–30 minutes for the next 2 hours.'},
+    {i:'📞',t:'<strong>Call or message your doctor / clinic today.</strong> Readings above 260 require medical guidance.'},
+    {i:'🚫',t:'<strong>Avoid all carbs and sweets</strong> until sugar comes below 180 mg/dL.'},
+    {i:'⏱',t:'Re-check after 2 hours. If not improving, <strong>go to a clinic or hospital without delay.</strong>'},
+  ]},
+  critical_high:{color:'red',eyebrow:'🚨 Critical — seek emergency help NOW',title:'Medical Emergency Level',tips:[
+    {i:'🏥',t:'<strong>Go to the nearest hospital</strong> or call emergency services (112) immediately.'},
+    {i:'💉',t:'<strong>Take your maximum prescribed insulin dose</strong> if available — but do NOT delay going to hospital.'},
+    {i:'🛑',t:'<strong>Do NOT eat anything. Do NOT exercise.</strong> Rest and get medical help right now.'},
+    {i:'📞',t:'<strong>Call your doctor, a family member, or 112 right now.</strong> Do not wait. Do not drive yourself.'},
+  ]},
+};
+function getSuggKey(s){if(s<60)return'critical_low';if(s<70)return'low';if(s<=140)return'normal';if(s<=180)return'slightly_high';if(s<=260)return'high';if(s<=350)return'very_high';return'critical_high';}
+
+function showSuggPopup(sugar){
+  const key=getSuggKey(sugar),s=SUGG[key],c=s.color;
+  document.getElementById('suggAccentBar').className='sugg-accent-bar sa-'+c;
+  const ey=document.getElementById('suggEyebrow');ey.textContent=s.eyebrow;ey.className='sugg-eyebrow se-'+c;
+  document.getElementById('suggTitle').textContent=s.title;
+  const pill=document.getElementById('suggReadingPill');pill.textContent=sugar+' mg/dL — '+getLabel(sugar);pill.className='sugg-reading-pill sp-'+c;
+  document.getElementById('suggTips').innerHTML=s.tips.map(t=>'<div class="sugg-tip-item"><span class="sugg-tip-icon">'+t.i+'</span><span class="sugg-tip-text">'+t.t+'</span></div>').join('');
+  document.getElementById('suggDismiss').className='sugg-dismiss sd-'+c;
+  document.getElementById('suggPopupOverlay').classList.add('show');
+  document.getElementById('suggestionPopup').classList.add('show');
+}
+function closeSuggPopup(){document.getElementById('suggestionPopup').classList.remove('show');document.getElementById('suggPopupOverlay').classList.remove('show');}
 
 function buildInsulinCard(sugar,targetId){
   const r=getIns(sugar);
-  let doseHtml;
-  if(r.units===null)doseHtml='<div class="ins-dose-badge">&#8212;</div><div class="ins-dose-unit">No Dose</div>';
-  else doseHtml='<div class="ins-dose-badge">'+r.units+'</div><div class="ins-dose-unit">units</div>';
-  document.getElementById(targetId).innerHTML=
-    '<div class="insulin-card '+r.theme+'">'+
-    '<div class="ins-icon">'+r.icon+'</div>'+
-    '<div class="ins-body">'+
-      '<div class="ins-title">&#128137; '+r.title+'</div>'+
-      '<div class="ins-range">Reading: <strong>'+sugar+' mg/dL</strong> &mdash; Range: '+r.label+' mg/dL</div>'+
-      '<div class="ins-range">'+r.action+'</div>'+
-      '<div class="ins-disclaimer">&#9877;&#65039; Reference only. Always follow your doctor\'s prescribed dosage and never self-adjust insulin.</div>'+
-    '</div>'+
-    '<div class="ins-right">'+doseHtml+'</div>'+
-    '</div>';
+  const doseHtml=r.units===null?'<div class="ins-dose-badge">—</div><div class="ins-dose-unit">No Dose</div>':'<div class="ins-dose-badge">'+r.units+'</div><div class="ins-dose-unit">units</div>';
+  document.getElementById(targetId).innerHTML='<div class="insulin-card '+r.theme+'"><div class="ins-icon">'+r.icon+'</div><div class="ins-body"><div class="ins-title">💉 '+r.title+'</div><div class="ins-range">Reading: <strong>'+sugar+' mg/dL</strong> — Range: '+r.label+' mg/dL</div><div class="ins-range">'+r.action+'</div><div class="ins-disclaimer">⚕️ Reference only. Always follow your doctor\'s prescribed dosage.</div></div><div class="ins-right">'+doseHtml+'</div></div>';
 }
-
 function insStripHtml(sugar){
   const r=getIns(sugar);
   const cls={'ins-safe':'dri-none','ins-low-bg':'dri-low','ins-mild':'dri-mild','ins-warn':'dri-warn','ins-danger':'dri-danger'}[r.theme]||'dri-mild';
-  const units=r.units===null?'No insulin (treat low first)':r.units===0?'0 units \u2014 no insulin needed':r.units+' units rapid-acting insulin';
-  return '<div class="record-ins-strip '+cls+'">&#128137;&nbsp;<span class="dr-ins-units">'+units+'</span><span style="opacity:.7;font-size:.73rem;">&mdash; '+r.action+'</span></div>';
+  const units=r.units===null?'No insulin (treat low first)':r.units===0?'0 units — no insulin needed':r.units+' units rapid-acting insulin';
+  return'<div class="record-ins-strip '+cls+'">💉&nbsp;<span class="dr-ins-units">'+units+'</span><span style="opacity:.6;font-size:.69rem"> — '+r.action+'</span></div>';
 }
 
+/* ── PROFILE ── */
 function saveProfile(){
-  const name=document.getElementById('p-name').value.trim();
-  const age=document.getElementById('p-age').value.trim();
-  const gender=document.getElementById('p-gender').value;
-  const clinic=document.getElementById('p-clinic').value.trim();
+  const name=document.getElementById('p-name').value.trim(),age=document.getElementById('p-age').value.trim(),gender=document.getElementById('p-gender').value,clinic=document.getElementById('p-clinic').value.trim();
   if(!name){showProfileErr('Please enter your full name.');return;}
   if(!age||age<1||age>120){showProfileErr('Please enter a valid age.');return;}
   if(!gender){showProfileErr('Please select your gender.');return;}
@@ -627,165 +645,65 @@ function showProfileErr(msg){const el=document.getElementById('profileErr');el.t
 function editProfile(){
   const p=getProfile();
   if(p){document.getElementById('p-name').value=p.name||'';document.getElementById('p-age').value=p.age||'';document.getElementById('p-gender').value=p.gender||'';document.getElementById('p-dtype').value=p.dtype||'';document.getElementById('p-clinic').value=p.clinic||'';document.getElementById('p-doctor').value=p.doctor||'';}
-  // restore photo preview in modal
-  const photo=localStorage.getItem(PHOTO_KEY);
-  showPhotoPreview(photo||null);
-  document.getElementById('profileErr').classList.remove('show');document.getElementById('profileOverlay').style.display='flex';
+  const photo=localStorage.getItem(PHOTO_KEY);showPhotoPreview(photo||null);
+  document.getElementById('profileErr').classList.remove('show');
+  document.getElementById('profileOverlay').style.display='flex';
 }
-// ── PHOTO HANDLING ──────────────────────────────────────
-const PHOTO_KEY='glucotrack_photo';
-function handlePhotoUpload(e){
-  const file=e.target.files[0];if(!file)return;
-  if(file.size>3*1024*1024){alert('Image too large. Please use a photo under 3MB.');return;}
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    const data=ev.target.result;
-    localStorage.setItem(PHOTO_KEY,data);
-    showPhotoPreview(data);
-  };
-  reader.readAsDataURL(file);
-}
-function showPhotoPreview(data){
-  const circle=document.getElementById('photoPreviewCircle');
-  const placeholder=document.getElementById('photoPlaceholder');
-  if(data){
-    placeholder.style.display='none';
-    let img=circle.querySelector('img');
-    if(!img){img=document.createElement('img');circle.appendChild(img);}
-    img.src=data;img.style.display='block';
-    document.getElementById('photoRemoveBtn').classList.add('show');
-  }else{
-    placeholder.style.display='';
-    const img=circle.querySelector('img');if(img)img.style.display='none';
-    document.getElementById('photoRemoveBtn').classList.remove('show');
-  }
-}
-function removePhoto(){
-  localStorage.removeItem(PHOTO_KEY);
-  showPhotoPreview(null);
-  document.getElementById('photoFileInput').value='';
-  // reset header avatar
-  const av=document.getElementById('userAvatar');
-  const img=av.querySelector('img');if(img)img.remove();
-  const sp=document.getElementById('userAvatarInitials');if(sp)sp.style.display='';
-}
-function renderUserBadge(p){
-  if(!p)return;
-  const initials=p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const av=document.getElementById('userAvatar');
-  const sp=document.getElementById('userAvatarInitials');
-  const photo=localStorage.getItem(PHOTO_KEY);
-  if(photo){
-    if(sp)sp.style.display='none';
-    let img=av.querySelector('img');
-    if(!img){img=document.createElement('img');av.appendChild(img);}
-    img.src=photo;img.style.display='block';
-  }else{
-    if(sp){sp.textContent=initials;sp.style.display='';}
-    const img=av.querySelector('img');if(img)img.remove();
-  }
-  document.getElementById('userNameDisplay').textContent=p.name+(p.age?', '+p.age:'');
-}
+function handlePhotoUpload(e){const file=e.target.files[0];if(!file)return;if(file.size>3*1024*1024){alert('Image too large. Please use a photo under 3MB.');return;}const reader=new FileReader();reader.onload=ev=>{localStorage.setItem(PHOTO_KEY,ev.target.result);showPhotoPreview(ev.target.result);};reader.readAsDataURL(file);}
+function showPhotoPreview(data){const circle=document.getElementById('photoPreviewCircle'),ph=document.getElementById('photoPlaceholder');if(data){ph.style.display='none';let img=circle.querySelector('img');if(!img){img=document.createElement('img');circle.appendChild(img);}img.src=data;img.style.display='block';document.getElementById('photoRemoveBtn').classList.add('show');}else{ph.style.display='';const img=circle.querySelector('img');if(img)img.style.display='none';document.getElementById('photoRemoveBtn').classList.remove('show');}}
+function removePhoto(){localStorage.removeItem(PHOTO_KEY);showPhotoPreview(null);document.getElementById('photoFileInput').value='';const av=document.getElementById('userAvatar');const img=av.querySelector('img');if(img)img.remove();const sp=document.getElementById('userAvatarInitials');if(sp)sp.style.display='';}
+function renderUserBadge(p){if(!p)return;const initials=p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);const av=document.getElementById('userAvatar'),sp=document.getElementById('userAvatarInitials');const photo=localStorage.getItem(PHOTO_KEY);if(photo){if(sp)sp.style.display='none';let img=av.querySelector('img');if(!img){img=document.createElement('img');av.appendChild(img);}img.src=photo;img.style.display='block';}else{if(sp){sp.textContent=initials;sp.style.display='';}const img=av.querySelector('img');if(img)img.remove();}document.getElementById('userNameDisplay').textContent=p.name+(p.age?', '+p.age:'');}
 
+/* ── PDF MODAL ── */
 let pdfType='weekly';
-function openPdfModal(){
-  pdfType='weekly';setPdfType('weekly');
-  const now=new Date();
-  document.getElementById('pdfToDate').value=now.toISOString().slice(0,10);
-  const w=new Date(now);w.setDate(w.getDate()-6);
-  document.getElementById('pdfFromDate').value=w.toISOString().slice(0,10);
-  document.getElementById('pdfErr').classList.remove('show');
-  document.getElementById('pdfModalOverlay').classList.add('show');
-}
+function openPdfModal(){pdfType='weekly';setPdfType('weekly');const now=new Date();document.getElementById('pdfToDate').value=now.toISOString().slice(0,10);const w=new Date(now);w.setDate(w.getDate()-6);document.getElementById('pdfFromDate').value=w.toISOString().slice(0,10);document.getElementById('pdfErr').classList.remove('show');document.getElementById('pdfModalOverlay').classList.add('show');}
 function closePdfModal(){document.getElementById('pdfModalOverlay').classList.remove('show');}
-function setPdfType(t){
-  pdfType=t;
-  ['weekly','monthly','custom'].forEach(x=>{document.getElementById('pdfType'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===t);});
-  const m={weekly:'Report will include all readings from the last 7 days.',monthly:'Report will cover all readings for the current calendar month.',custom:'Choose your own From and To dates.'};
-  document.getElementById('pdfInfoText').textContent=m[t];
-  document.getElementById('pdfCustomDates').style.display=t==='custom'?'grid':'none';
-  document.getElementById('pdfErr').classList.remove('show');
-}
-function confirmDownloadPDF(){
-  const now=new Date();let fromDate,toDate,label;
-  if(pdfType==='weekly'){
-    toDate=new Date(now);toDate.setHours(23,59,59,999);
-    fromDate=new Date(now);fromDate.setDate(fromDate.getDate()-6);fromDate.setHours(0,0,0,0);
-    label='Weekly Report (Last 7 Days)';
-  }else if(pdfType==='monthly'){
-    fromDate=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);
-    toDate=new Date(now);toDate.setHours(23,59,59,999);
-    const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-    label='Monthly Report ('+dim+' Days \u2014 '+now.toLocaleDateString('en-IN',{month:'long',year:'numeric'})+')';
-  }else{
-    const fv=document.getElementById('pdfFromDate').value,tv=document.getElementById('pdfToDate').value;
-    if(!fv||!tv){showPdfErr('Please select both From and To dates.');return;}
-    fromDate=new Date(fv+'T00:00:00');toDate=new Date(tv+'T23:59:59');
-    if(fromDate>toDate){showPdfErr('From date must be before To date.');return;}
-    const dd=Math.round((toDate-fromDate)/864e5)+1;
-    label='Custom Report ('+dd+' day'+(dd>1?'s':'')+': '+fromDate.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+' \u2013 '+toDate.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+')';
-  }
-  const filtered=getRecords().filter(r=>{const d=new Date(r.dt||r.id);return d>=fromDate&&d<=toDate;});
-  closePdfModal();generatePDF(filtered,label,fromDate,toDate);
-}
+function setPdfType(t){pdfType=t;['weekly','monthly','custom'].forEach(x=>{document.getElementById('pdfType'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===t);});const m={weekly:'Report will include all readings from the last 7 days.',monthly:'Report will cover all readings for the current calendar month.',custom:'Choose your own From and To dates.'};document.getElementById('pdfInfoText').textContent=m[t];document.getElementById('pdfCustomDates').style.display=t==='custom'?'grid':'none';document.getElementById('pdfErr').classList.remove('show');}
+function confirmDownloadPDF(){const now=new Date();let fromDate,toDate,label;if(pdfType==='weekly'){toDate=new Date(now);toDate.setHours(23,59,59,999);fromDate=new Date(now);fromDate.setDate(fromDate.getDate()-6);fromDate.setHours(0,0,0,0);label='Weekly Report (Last 7 Days)';}else if(pdfType==='monthly'){fromDate=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);toDate=new Date(now);toDate.setHours(23,59,59,999);label='Monthly Report ('+now.toLocaleDateString('en-IN',{month:'long',year:'numeric'})+')';}else{const fv=document.getElementById('pdfFromDate').value,tv=document.getElementById('pdfToDate').value;if(!fv||!tv){showPdfErr('Please select both From and To dates.');return;}fromDate=new Date(fv+'T00:00:00');toDate=new Date(tv+'T23:59:59');if(fromDate>toDate){showPdfErr('From date must be before To date.');return;}const dd=Math.round((toDate-fromDate)/864e5)+1;label='Custom Report ('+dd+' day'+(dd>1?'s':'')+')';} const filtered=getRecords().filter(r=>{const d=new Date(r.dt||r.id);return d>=fromDate&&d<=toDate;});closePdfModal();generatePDF(filtered,label,fromDate,toDate);}
 function showPdfErr(msg){const el=document.getElementById('pdfErr');el.textContent=msg;el.classList.add('show');}
 
+/* ── HELPERS ── */
 function getStatus(s){return s<60||s>=200?'danger':(s<70||(s>=141&&s<200)?'warn':'good');}
 function getLabel(s){if(s<60)return'Critical Low';if(s<70)return'Low';if(s<=140)return'Normal';if(s<=199)return'High';if(s<=299)return'Very High';return'Dangerously High';}
 function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function mealCat(m){m=m.toLowerCase();if(m.includes('fast'))return'fasting';if(m.includes('lunch')||m.includes('break'))return'lunch';if(m.includes('dinner')||m.includes('bed'))return'dinner';return'other';}
 
-function switchTab(n,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
-  if(n==='list')renderList();if(n==='calendar')renderCalendar();
-}
+function switchTab(n,btn){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');if(n==='list')renderList();if(n==='calendar')renderCalendar();}
 
-function showAlert(v){
-  const b=document.getElementById('alertBanner'),i=document.getElementById('alertIcon'),
-        t=document.getElementById('alertTitle'),m=document.getElementById('alertMsg');
-  b.className='alert-banner';
-  if(v<60){b.classList.add('alert-danger','show');i.textContent='\uD83D\uDEA8';t.textContent='Critical: Severe Low Blood Sugar';m.textContent='Dangerously low. Consume fast-acting sugar (juice or glucose tablets) immediately and seek medical help.';}
-  else if(v<70){b.classList.add('alert-warn','show');i.textContent='\u26A0\uFE0F';t.textContent='Low Blood Sugar \u2014 No Insulin';m.textContent='Below normal range. Have a fast-acting carb snack and re-check in 15 minutes. Do NOT inject insulin.';}
-  else if(v<=140){b.classList.add('alert-good','show');i.textContent='\u2705';t.textContent='Blood sugar is in a healthy range!';m.textContent='Great reading. Keep up balanced meals, regular activity, and consistent tracking.';}
-  else if(v<=180){b.classList.add('alert-warn','show');i.textContent='\u26A0\uFE0F';t.textContent='Slightly High \u2014 Check insulin suggestion below';m.textContent='Above normal range. Take the suggested dose and stay hydrated.';}
-  else if(v<=299){b.classList.add('alert-warn','show');i.textContent='\u26A0\uFE0F';t.textContent='High Blood Sugar \u2014 Correction needed';m.textContent='Significantly elevated. Take the suggested insulin dose and drink plenty of water.';}
-  else{b.classList.add('alert-danger','show');i.textContent='\uD83D\uDEA8';t.textContent='Dangerously High Blood Sugar!';m.textContent='Critically elevated. Take insulin as suggested and contact your healthcare provider immediately.';}
-  clearTimeout(b._t);
-  b._t=setTimeout(()=>{b.style.transition='opacity .5s';b.style.opacity='0';setTimeout(()=>{b.classList.remove('show');b.style.opacity='1';b.style.transition='';},500);},10000);
-}
+function showAlert(v){const b=document.getElementById('alertBanner'),i=document.getElementById('alertIcon'),t=document.getElementById('alertTitle'),m=document.getElementById('alertMsg');b.className='alert-banner';if(v<60){b.classList.add('alert-danger','show');i.textContent='🚨';t.textContent='Critical: Severe Low Blood Sugar';m.textContent='Dangerously low. Consume fast-acting sugar immediately and seek medical help.';}else if(v<70){b.classList.add('alert-warn','show');i.textContent='⚠️';t.textContent='Low Blood Sugar — No Insulin';m.textContent='Below normal range. Have a fast-acting carb snack and re-check in 15 minutes.';}else if(v<=140){b.classList.add('alert-good','show');i.textContent='✅';t.textContent='Blood sugar is in a healthy range!';m.textContent='Great reading. Keep up balanced meals, regular activity, and consistent tracking.';}else if(v<=180){b.classList.add('alert-warn','show');i.textContent='⚠️';t.textContent='Slightly High — Check insulin suggestion below';m.textContent='Above normal range. Take the suggested dose and stay hydrated.';}else if(v<=299){b.classList.add('alert-warn','show');i.textContent='⚠️';t.textContent='High Blood Sugar — Correction needed';m.textContent='Significantly elevated. Take the suggested insulin dose and drink plenty of water.';}else{b.classList.add('alert-danger','show');i.textContent='🚨';t.textContent='Dangerously High Blood Sugar!';m.textContent='Critically elevated. Take insulin and contact your healthcare provider immediately.';}clearTimeout(b._t);b._t=setTimeout(()=>{b.style.transition='opacity .5s';b.style.opacity='0';setTimeout(()=>{b.classList.remove('show');b.style.opacity='1';b.style.transition='';},500);},10000);}
 
+/* ── SAVE READING ── */
 function saveFromForm(){
-  const s=parseInt(document.getElementById('f-sugar').value);
-  const el=document.getElementById('f-sugar');
-  if(!s||s<40||s>600){el.style.borderColor='var(--red)';setTimeout(()=>el.style.borderColor='',1500);return;}
+  const s=parseInt(document.getElementById('f-sugar').value),el=document.getElementById('f-sugar');
+  if(!s||s<40||s>600){el.style.borderColor='var(--red2)';el.style.boxShadow='0 0 0 3px rgba(196,48,48,.12)';setTimeout(()=>{el.style.borderColor='';el.style.boxShadow='';},1500);return;}
   const dv=document.getElementById('f-date').value,tv=document.getElementById('f-time').value;
   const dt=dv&&tv?new Date(dv+'T'+tv):new Date();
   const rec={id:Date.now(),sugar:s,meal:document.getElementById('f-meal').value,notes:document.getElementById('f-notes').value.trim(),dt:dt.toISOString(),dateKey:dateKey(dt),displayTime:dt.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
   const recs=getRecords();recs.push(rec);saveRecords(recs);
   el.value='';document.getElementById('f-notes').value='';
+  // Flash saved confirmation
+  const btn=document.getElementById('saveBtnMain');
+  btn.textContent='✓ Saved!';btn.style.background='var(--sage2)';
+  setTimeout(()=>{btn.textContent='Save Reading';btn.style.background='';},1800);
   showAlert(s);buildInsulinCard(s,'add-insulin-wrap');updateStats();renderCalendar();
+  setTimeout(()=>showSuggPopup(s),350);
   document.getElementById('add-insulin-wrap').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 let selDK=null;
 function saveDayReading(){
-  const s=parseInt(document.getElementById('dp-sugar').value);
-  const el=document.getElementById('dp-sugar');
-  if(!s||s<40||s>600){el.style.borderColor='var(--red)';setTimeout(()=>el.style.borderColor='',1500);return;}
+  const s=parseInt(document.getElementById('dp-sugar').value),el=document.getElementById('dp-sugar');
+  if(!s||s<40||s>600){el.style.borderColor='var(--red2)';setTimeout(()=>el.style.borderColor='',1500);return;}
   const dt=selDK?new Date(selDK+'T'+new Date().toTimeString().slice(0,8)):new Date();
   const rec={id:Date.now(),sugar:s,meal:document.getElementById('dp-meal').value,notes:document.getElementById('dp-notes').value.trim(),dt:dt.toISOString(),dateKey:selDK||dateKey(new Date()),displayTime:dt.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
   const recs=getRecords();recs.push(rec);saveRecords(recs);
   el.value='';document.getElementById('dp-notes').value='';
   showAlert(s);buildInsulinCard(s,'dp-insulin-wrap');updateStats();renderDayPanel(selDK);renderCalendar();
+  setTimeout(()=>showSuggPopup(s),350);
 }
+function deleteReading(id){saveRecords(getRecords().filter(r=>r.id!==id));updateStats();renderDayPanel(selDK);renderCalendar();}
 
-function deleteReading(id){
-  saveRecords(getRecords().filter(r=>r.id!==id));
-  updateStats();renderDayPanel(selDK);renderCalendar();
-}
-
+/* ── CALENDAR ── */
 let calY,calM;
 function changeMonth(d){calM+=d;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}closePanel();renderCalendar();}
 function renderCalendar(){
@@ -808,17 +726,12 @@ function bCell(dayNum,dk,recs,isO,isToday,isSel){
     const items=g[x.k];if(!items.length)return;
     const w=items.reduce((a,b)=>{const o={danger:2,warn:1,good:0};return o[getStatus(a.sugar)]>=o[getStatus(b.sugar)]?a:b;});
     const st=getStatus(w.sugar);
-    dots+='<span class="meal-dot '+(st==='good'?'dot-'+(x.k==='other'?'other':x.k):st==='warn'?'dot-warn':'dot-danger')+'">&#8226; '+x.l+' '+w.sugar+'</span>';
+    dots+='<span class="meal-dot '+(st==='good'?'dot-'+(x.k==='other'?'other':x.k):st==='warn'?'dot-warn':'dot-danger')+'">• '+x.l+' '+w.sugar+'</span>';
   });
   dots+='</div>';
   return'<div class="cal-day '+cls+'" onclick="selectDay(\''+dk+'\')"><div class="day-num">'+dayNum+'</div>'+dots+'</div>';
 }
-function selectDay(dk){
-  selDK=dk;document.getElementById('dp-insulin-wrap').innerHTML='';
-  renderCalendar();renderDayPanel(dk);
-  document.getElementById('dayPanel').style.display='block';
-  document.getElementById('dayPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
+function selectDay(dk){selDK=dk;document.getElementById('dp-insulin-wrap').innerHTML='';renderCalendar();renderDayPanel(dk);document.getElementById('dayPanel').style.display='block';document.getElementById('dayPanel').scrollIntoView({behavior:'smooth',block:'nearest'});}
 function closePanel(){selDK=null;document.getElementById('dayPanel').style.display='none';document.getElementById('dp-insulin-wrap').innerHTML='';renderCalendar();}
 function renderDayPanel(dk){
   if(!dk)return;
@@ -826,110 +739,70 @@ function renderDayPanel(dk){
   document.getElementById('dayPanelTitle').textContent=dt.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const recs=getRecords().filter(r=>r.dateKey===dk).sort((a,b)=>new Date(a.dt)-new Date(b.dt));
   const list=document.getElementById('dayReadingsList');
-  if(!recs.length){list.innerHTML='<div class="empty-day">No readings for this day. Add one above!</div>';return;}
+  if(!recs.length){list.innerHTML='<div class="empty-day">No readings for this day. Add one above.</div>';return;}
   list.innerHTML=recs.map(r=>{
     const st=getStatus(r.sugar),lb=getLabel(r.sugar),t=new Date(r.dt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-    return'<div class="day-rec">'+
-      '<div class="day-rec-main">'+
-        '<div class="dr-badge badge-'+st+'"><div class="v">'+r.sugar+'</div><div class="u">mg/dL</div></div>'+
-        '<div class="dr-info"><div class="dr-meal">'+r.meal+'</div><div class="dr-time">'+t+'</div>'+(r.notes?'<div class="dr-notes">'+r.notes+'</div>':'')+
-        '</div><span class="dr-pill pill-'+st+'">'+lb+'</span>'+
-        '<button class="dr-del" onclick="deleteReading('+r.id+')" title="Delete">&#10005;</button>'+
-      '</div>'+
-      insStripHtml(r.sugar)+
-    '</div>';
+    return'<div class="day-rec"><div class="day-rec-main"><div class="dr-badge badge-'+st+'"><div class="v">'+r.sugar+'</div><div class="u">mg/dL</div></div><div class="dr-info"><div class="dr-meal">'+r.meal+'</div><div class="dr-time">'+t+'</div>'+(r.notes?'<div class="dr-notes">'+r.notes+'</div>':'')+
+    '</div><span class="dr-pill pill-'+st+'">'+lb+'</span><button class="dr-del" onclick="deleteReading('+r.id+')" title="Delete">✕</button></div>'+insStripHtml(r.sugar)+'</div>';
   }).join('');
 }
 
+/* ── LIST ── */
 function renderList(){
   const recs=getRecords();document.getElementById('recordsCount').textContent='('+recs.length+')';
   const list=document.getElementById('recordsList');
-  if(!recs.length){list.innerHTML='<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 00-2 2v1h18v-1a2 2 0 00-2-2h-4M12 3v10M8 7l4-4 4 4"/></svg><p>No readings yet. Add your first one!</p></div>';return;}
+  if(!recs.length){list.innerHTML='<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 00-2 2v1h18v-1a2 2 0 00-2-2h-4M12 3v10M8 7l4-4 4 4"/></svg><p>No readings yet. Add your first one.</p></div>';return;}
   list.innerHTML=[...recs].reverse().map(r=>{
     const st=getStatus(r.sugar),lb=getLabel(r.sugar);
-    return'<div class="record-card">'+
-      '<div class="record-top">'+
-        '<div class="record-level-badge badge-'+st+'"><div class="val">'+r.sugar+'</div><div class="unit">mg/dL</div></div>'+
-        '<div class="record-info"><div class="record-meal">'+r.meal+'</div><div class="record-time">'+r.displayTime+'</div>'+(r.notes?'<div class="record-notes">'+r.notes+'</div>':'')+
-        '</div><span class="record-status-pill pill-'+st+'">'+lb+'</span>'+
-      '</div>'+
-      insStripHtml(r.sugar)+
-    '</div>';
+    return'<div class="record-card"><div class="record-top"><div class="record-level-badge badge-'+st+'"><div class="val">'+r.sugar+'</div><div class="unit">mg/dL</div></div><div class="record-info"><div class="record-meal">'+r.meal+'</div><div class="record-time">'+r.displayTime+'</div>'+(r.notes?'<div class="record-notes">'+r.notes+'</div>':'')+
+    '</div><span class="record-status-pill pill-'+st+'">'+lb+'</span></div>'+insStripHtml(r.sugar)+'</div>';
   }).join('');
 }
 
+/* ── STATS ── */
 function updateStats(){
-  const recs=getRecords();document.getElementById('stat-total').textContent=recs.length;
-  if(!recs.length){['stat-avg','stat-high','stat-low'].forEach(id=>document.getElementById(id).textContent='\u2014');return;}
+  const recs=getRecords();
+  document.getElementById('stat-total').textContent=recs.length;
+  if(!recs.length){['stat-avg','stat-high','stat-low'].forEach(id=>document.getElementById(id).textContent='—');return;}
   const td=dateKey(new Date()),tR=recs.filter(r=>r.dateKey===td),all=recs.map(r=>r.sugar);
   document.getElementById('stat-avg').textContent=Math.round(all.reduce((a,b)=>a+b,0)/all.length);
-  document.getElementById('stat-high').textContent=tR.length?Math.max(...tR.map(r=>r.sugar)):'\u2014';
-  document.getElementById('stat-low').textContent=tR.length?Math.min(...tR.map(r=>r.sugar)):'\u2014';
+  document.getElementById('stat-high').textContent=tR.length?Math.max(...tR.map(r=>r.sugar)):'—';
+  document.getElementById('stat-low').textContent=tR.length?Math.min(...tR.map(r=>r.sugar)):'—';
 }
 function clearAll(){if(confirm('Delete ALL records? This cannot be undone.')){saveRecords([]);closePanel();renderList();renderCalendar();updateStats();document.getElementById('add-insulin-wrap').innerHTML='';}}
 
+/* ── PDF ── */
 function generatePDF(filtered,label,fromDate,toDate){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const now=new Date(),p=getProfile()||{};
-  doc.setFillColor(8,80,65);doc.rect(0,0,210,50,'F');
+  doc.setFillColor(45,90,61);doc.rect(0,0,210,50,'F');
   doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(22);doc.text('GlucoTrack',15,18);
   doc.setFontSize(11);doc.setFont('helvetica','normal');doc.text(label,15,28);
   doc.setFontSize(8.5);doc.text('Generated: '+now.toLocaleString('en-IN',{dateStyle:'long',timeStyle:'short'}),15,36);
-  doc.setFillColor(230,247,240);doc.rect(0,50,210,36,'F');
-  doc.setTextColor(8,80,65);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text('PATIENT INFORMATION',15,58);
+  doc.setFillColor(234,245,238);doc.rect(0,50,210,36,'F');
+  doc.setTextColor(45,90,61);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text('PATIENT INFORMATION',15,58);
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(30,30,30);
   doc.text('Name: '+(p.name||'—'),15,65);doc.text('Age: '+(p.age||'—'),80,65);doc.text('Gender: '+(p.gender||'—'),145,65);
-  doc.text('Type: '+(p.dtype||'Not specified'),15,72);doc.text('Clinic: '+(p.clinic||'—'),80,72);
-  doc.text('Doctor: '+(p.doctor||'—'),15,79);
+  doc.text('Type: '+(p.dtype||'Not specified'),15,72);doc.text('Clinic: '+(p.clinic||'—'),80,72);doc.text('Doctor: '+(p.doctor||'—'),15,79);
   let sy=92;
   if(filtered.length){
-    const lvls=filtered.map(r=>r.sugar);
-    const avg=Math.round(lvls.reduce((a,b)=>a+b,0)/lvls.length);
-    const hi=Math.max(...lvls),lo=Math.min(...lvls);
-    const ir=filtered.filter(r=>r.sugar>=70&&r.sugar<=140).length;
-    const pct=Math.round(ir/filtered.length*100);
-    doc.setFillColor(241,247,245);doc.roundedRect(13,sy,184,30,3,3,'F');
-    doc.setTextColor(8,80,65);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('SUMMARY',18,sy+8);
+    const lvls=filtered.map(r=>r.sugar),avg=Math.round(lvls.reduce((a,b)=>a+b,0)/lvls.length),hi=Math.max(...lvls),lo=Math.min(...lvls);
+    const ir=filtered.filter(r=>r.sugar>=70&&r.sugar<=140).length,pct=Math.round(ir/filtered.length*100);
+    doc.setFillColor(241,248,245);doc.roundedRect(13,sy,184,30,3,3,'F');
+    doc.setTextColor(45,90,61);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('SUMMARY',18,sy+8);
     doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);doc.setFontSize(9);
-    doc.text('Total: '+filtered.length,18,sy+17);doc.text('Average: '+avg+' mg/dL',70,sy+17);
-    doc.text('Highest: '+hi+' mg/dL',130,sy+17);doc.text('Lowest: '+lo+' mg/dL',170,sy+17);
+    doc.text('Total: '+filtered.length,18,sy+17);doc.text('Average: '+avg+' mg/dL',70,sy+17);doc.text('Highest: '+hi+' mg/dL',130,sy+17);doc.text('Lowest: '+lo+' mg/dL',170,sy+17);
     doc.setTextColor(30,100,60);doc.text('In-range (70-140): '+pct+'%   |   Out-of-range: '+(100-pct)+'%',18,sy+25);
-    const rows=filtered.sort((a,b)=>new Date(b.dt||b.id)-new Date(a.dt||a.id)).map(r=>{
-      const ins=getIns(r.sugar);
-      const ud=ins.units===null?'None (treat low)':ins.units===0?'0 (no insulin)':ins.units+' Units';
-      return[r.displayTime,r.sugar+' mg/dL',r.meal,getLabel(r.sugar),ud,r.notes||'—'];
-    });
-    doc.autoTable({
-      startY:sy+36,
-      head:[['Date & Time','Blood Sugar','Meal','Status','Insulin','Notes']],
-      body:rows,
-      styles:{font:'helvetica',fontSize:8,cellPadding:3.5},
-      headStyles:{fillColor:[8,80,65],textColor:255,fontStyle:'bold'},
-      alternateRowStyles:{fillColor:[247,252,250]},
-      columnStyles:{0:{cellWidth:38},1:{cellWidth:24,halign:'center'},2:{cellWidth:30},3:{cellWidth:24},4:{cellWidth:22,halign:'center'},5:{cellWidth:40}},
-      didParseCell(d){
-        if(d.section==='body'){
-          if(d.column.index===3){const v=d.cell.text[0];if(v==='Normal')d.cell.styles.textColor=[39,64,16];else if(v==='Low'||v==='High')d.cell.styles.textColor=[127,74,5];else d.cell.styles.textColor=[162,45,45];}
-          if(d.column.index===4){const v=d.cell.text[0];if(v.includes('None')||v.includes('0'))d.cell.styles.textColor=[39,64,16];else if(parseInt(v)<=6)d.cell.styles.textColor=[24,95,165];else if(parseInt(v)<=10)d.cell.styles.textColor=[160,96,10];else d.cell.styles.textColor=[162,45,45];}
-        }
-      }
-    });
-    const finalY=doc.lastAutoTable.finalY+10;
-    if(finalY+60<doc.internal.pageSize.height){
-      doc.setFillColor(230,247,240);doc.roundedRect(13,finalY,184,8,2,2,'F');
-      doc.setTextColor(8,80,65);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
-      doc.text('INSULIN DOSING REFERENCE (Rapid-acting: NovoRapid / Humalog)',18,finalY+5.5);
-    }
-  }else{
-    doc.setTextColor(100,100,100);doc.setFontSize(11);doc.text('No records found for the selected period.',15,sy+10);
-  }
-  const ph=doc.internal.pageSize.height;
-  doc.setFontSize(7);doc.setTextColor(160,160,160);
-  doc.text('GlucoTrack \u2014 For personal tracking only. Insulin doses are per prescribed sliding scale. Always consult your doctor.',15,ph-8);
+    const rows=filtered.sort((a,b)=>new Date(b.dt||b.id)-new Date(a.dt||a.id)).map(r=>{const ins=getIns(r.sugar);const ud=ins.units===null?'None (treat low)':ins.units===0?'0 (no insulin)':ins.units+' Units';return[r.displayTime,r.sugar+' mg/dL',r.meal,getLabel(r.sugar),ud,r.notes||'—'];});
+    doc.autoTable({startY:sy+36,head:[['Date & Time','Blood Sugar','Meal','Status','Insulin','Notes']],body:rows,styles:{font:'helvetica',fontSize:8,cellPadding:3.5},headStyles:{fillColor:[45,90,61],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[247,252,250]},columnStyles:{0:{cellWidth:38},1:{cellWidth:24,halign:'center'},2:{cellWidth:30},3:{cellWidth:24},4:{cellWidth:22,halign:'center'},5:{cellWidth:40}},
+    didParseCell(d){if(d.section==='body'){if(d.column.index===3){const v=d.cell.text[0];if(v==='Normal')d.cell.styles.textColor=[30,80,50];else if(v==='Low'||v==='High')d.cell.styles.textColor=[127,74,5];else d.cell.styles.textColor=[162,45,45];}if(d.column.index===4){const v=d.cell.text[0];if(v.includes('None')||v.includes('0'))d.cell.styles.textColor=[30,80,50];else if(parseInt(v)<=6)d.cell.styles.textColor=[24,95,165];else if(parseInt(v)<=10)d.cell.styles.textColor=[160,96,10];else d.cell.styles.textColor=[162,45,45];}}}});
+  }else{doc.setTextColor(100,100,100);doc.setFontSize(11);doc.text('No records found for the selected period.',15,sy+10);}
+  const ph=doc.internal.pageSize.height;doc.setFontSize(7);doc.setTextColor(160,160,160);
+  doc.text('GlucoTrack — For personal tracking only. Insulin doses are per prescribed sliding scale. Always consult your doctor.',15,ph-8);
   doc.save('glucotrack_report_'+fromDate.toISOString().slice(0,10)+'_to_'+toDate.toISOString().slice(0,10)+'.pdf');
 }
 
+/* ── INIT ── */
 (function(){
   const now=new Date();
   document.getElementById('f-date').value=now.toISOString().slice(0,10);
